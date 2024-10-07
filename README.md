@@ -1,3 +1,6 @@
+> Steps
+- Run projects `npm run dev`
+
 > Commitlint rules
 - build: Cambios que afectan el sistema de construcción o dependencias externas (ej. cambios en `package.json`).
 - chore: Tareas de mantenimiento o configuración, como la primera subida de archivos, actualización de scripts, etc.
