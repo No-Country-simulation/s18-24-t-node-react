@@ -20,6 +20,13 @@
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
+    "@types/bcrypt": "^5.0.2",
     "husky": "^9.1.6"
+  },
+  "dependencies": {
+    "@nestjs/mongoose": "^10.0.10",
+    "bcrypt": "^5.1.1",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.0"
   }
 }
