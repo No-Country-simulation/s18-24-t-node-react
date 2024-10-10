@@ -15,10 +15,13 @@ export class AppModule {}
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './users/user.module';
+import * as dotenv from 'dotenv';
 
+dotenv.config();
+const mongoUri = process.env.MONGO_URI;
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://s1824tnodereact:BAkCcE7srIY1cNO5@cluster0.fgmuz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),
+    MongooseModule.forRoot(mongoUri),
     UserModule,
   ],
 })
