@@ -6,7 +6,7 @@ import { Review } from './review.model';*/
 
 @Schema({ timestamps: true })
 export class User extends Document {
-  @Prop()
+  @Prop({required: true})
   name: string;
 
   @Prop({ required: true, unique: true })
@@ -15,8 +15,14 @@ export class User extends Document {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ enum: ['guest', 'host'], default: 'guest' })
-  role: string;
+  @Prop({ required: true })
+  mobileNumber: string;
+
+  @Prop({ required: true })
+  birthDate: Date;
+
+  @Prop({ required: true })
+  nationality: string;
   /*
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Property' }] })
   properties: Property[];
