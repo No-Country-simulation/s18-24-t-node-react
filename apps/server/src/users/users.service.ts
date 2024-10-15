@@ -23,7 +23,9 @@ export class UsersService {
   async login(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
 
-    const user = await this.findOneByEmail(email);
+    const emailToLowerCase = email.toLowerCase();
+
+    const user = await this.findOneByEmail(emailToLowerCase);
 
     const isPasswordMatch = await compare(password, user.password);
 
