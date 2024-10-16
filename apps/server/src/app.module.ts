@@ -9,10 +9,11 @@ import { AppService } from './app.service';
 import { PropertyModule } from './property/property.module';
 
 @Module({
-  imports: [PropertyModule
+  imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URL),
     UsersModule,
+    PropertyModule
   ],
   controllers: [AppController],
   providers: [AppService],

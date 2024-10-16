@@ -1,11 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
+import { Property } from './entities/property.entity';
 
 @Injectable()
 export class PropertyService {
-  create(createPropertyDto: CreatePropertyDto) {
-    return 'This action adds a new property';
+  constructor(@InjectModel(Property.name) private propertyModel: Model<Property>) {}
+
+  async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
+    const { title, description, price, availabilityDate, photos } = createPropertyDto;
+
+    /*
+    const existingProperty = await this.propertyModel.findOne({ email });
+    if (existingProperty) {
+      throw new BadRequestException('Email already in use');
+    }
+    */
+
+    const newProperty = new this.propertyModel({
+      title,
+      description,
+      price,
+      availabilityDate,
+      photos
+    });
+
+    return newProperty.save();
   }
 
   findAll() {
