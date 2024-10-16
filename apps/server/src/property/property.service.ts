@@ -28,7 +28,7 @@ export class PropertyService {
       photos
     });
 
-    return newProperty.save();
+    return await newProperty.save();
   }
 
   findAll() {
