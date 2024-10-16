@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PropertyService } from './property.service';
+import { Property } from './entities/property.entity';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 
@@ -8,10 +9,10 @@ export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
 
   @Post('register') 
-  create(@Body() createPropertyDto: CreatePropertyDto) {
+  async create(@Body() createPropertyDto: CreatePropertyDto): Promise<Property> {
     return this.propertyService.create(createPropertyDto);
   }
-
+  /*
   @Get()
   findAll() {
     return this.propertyService.findAll();
@@ -31,4 +32,5 @@ export class PropertyController {
   remove(@Param('id') id: string) {
     return this.propertyService.remove(+id);
   }
+    */
 }

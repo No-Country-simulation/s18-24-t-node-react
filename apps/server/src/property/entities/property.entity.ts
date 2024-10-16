@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: false })
 export class Property extends Document {
   @Prop({required: true})
   title: string;
@@ -18,7 +18,7 @@ export class Property extends Document {
 
   @Prop({ required: true })
   photos: string[];
-
+  
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);

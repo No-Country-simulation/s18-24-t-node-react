@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -10,6 +10,7 @@ export class PropertyService {
   constructor(@InjectModel(Property.name) private propertyModel: Model<Property>) {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
+    Logger.log('Se registra una nueva propiedad...');
     const { title, description, price, availabilityDate, photos } = createPropertyDto;
 
     /*
@@ -23,7 +24,7 @@ export class PropertyService {
       title,
       description,
       price,
-      availabilityDate,
+      availabilityDate, //Se puede enviar fecha mas la hora: 2024-10-15T14:30:00Z
       photos
     });
 
