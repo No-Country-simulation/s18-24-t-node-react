@@ -11,7 +11,7 @@ import { PropertyModule } from './property/property.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot('mongodb+srv://mongoUser:XD2YIwt4fAzyS2BX@cluster0.sfgmb53.mongodb.net/BD_Prueba'),
+    MongooseModule.forRoot(process.env.MONGO_URL),
     UsersModule,
     PropertyModule
   ],
