@@ -1,11 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 /*import { Property } from './property.model';
 import { Booking } from './booking.model';
 import { Review } from './review.model';*/
 
 @Schema({ timestamps: true })
 export class User extends Document {
+  
   @Prop({ required: true })
   name: string;
 
@@ -36,3 +37,4 @@ export class User extends Document {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
