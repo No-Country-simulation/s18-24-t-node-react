@@ -6,7 +6,8 @@ import { Review } from './review.model';*/
 
 @Schema({ timestamps: true })
 export class User extends Document {
-  @Prop({required: true})
+  
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true, unique: true })
