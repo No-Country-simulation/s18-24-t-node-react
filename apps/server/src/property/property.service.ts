@@ -11,7 +11,7 @@ export class PropertyService {
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
     Logger.log('Se registra una nueva propiedad...');
-    const { title, description, price, availabilityDate, photos } = createPropertyDto;
+    const { title, description, price, photos } = createPropertyDto;
 
     /*
     const existingProperty = await this.propertyModel.findOne({ email });
@@ -24,15 +24,14 @@ export class PropertyService {
       title,
       description,
       price,
-      availabilityDate, //Se puede enviar fecha mas la hora: 2024-10-15T14:30:00Z
       photos
     });
 
     return await newProperty.save();
   }
 
-  findAll() {
-    return `This action returns all property`;
+  async findAll() {
+    return await this.propertyModel.find().sort({createdAt: -1});
   }
 
   findOne(id: number) {

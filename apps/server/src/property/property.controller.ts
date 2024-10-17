@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PropertyService } from './property.service';
 import { Property } from './entities/property.entity';
 import { CreatePropertyDto } from './dto/create-property.dto';
+import { PropertyParamsDto } from './dto/property-params.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 
 @Controller('property')
@@ -12,12 +13,14 @@ export class PropertyController {
   async create(@Body() createPropertyDto: CreatePropertyDto): Promise<Property> {
     return this.propertyService.create(createPropertyDto);
   }
-  /*
+  
   @Get()
-  findAll() {
-    return this.propertyService.findAll();
+  async findAll(@Param() filterQuery: PropertyParamsDto) {
+    const {title, price, tags, ascOrDesc} = filterQuery;
+    return await this.propertyService.findAll();
   }
 
+  /*
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.propertyService.findOne(+id);
