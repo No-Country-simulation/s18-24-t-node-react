@@ -7,6 +7,7 @@ import {
   Patch,
   Param,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
