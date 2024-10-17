@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param, Delete, Get } from '@nestjs/common';
 
 import { PropertyService } from './property.service';
 import { Property } from './entities/property.entity';
@@ -14,6 +14,16 @@ export class PropertyController {
     @Body() createPropertyDto: CreatePropertyDto,
   ): Promise<Property> {
     return this.propertyService.create(createPropertyDto);
+  }
+
+  @Get('get/:id')
+  async findOneById(@Param('id') id: string) {
+    return this.propertyService.findOneById(id);
+  }
+
+  @Delete('delete/:id')
+  async remove(@Param('id') id: number) {
+    return this.propertyService.remove(id);
   }
 
   @Patch(':id')
