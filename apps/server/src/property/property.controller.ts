@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Query, Delete } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './entities/property.entity';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -15,9 +15,8 @@ export class PropertyController {
   }
   
   @Get()
-  async findAll(@Param() filterQuery: PropertyParamsDto) {
-    const {title, price, tags, ascOrDesc} = filterQuery;
-    return await this.propertyService.findAll();
+  async findAll(@Query() filterQuery: PropertyParamsDto) {
+    return await this.propertyService.findAll(filterQuery);
   }
 
   /*
@@ -35,5 +34,5 @@ export class PropertyController {
   remove(@Param('id') id: string) {
     return this.propertyService.remove(+id);
   }
-    */
+  */
 }

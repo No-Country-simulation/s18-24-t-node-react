@@ -19,7 +19,7 @@ export class CreatePropertyDto {
   readonly price: number;
 
   @ArrayMinSize(3)
-  @IsUrl({}, { each: true })
+//   @IsUrl({}, { each: true })
   readonly photos: string[];
 
   @IsNumber()
