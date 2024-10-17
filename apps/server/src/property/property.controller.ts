@@ -1,4 +1,13 @@
-import { Controller, Post, Body, UseInterceptors, UploadedFiles, Logger, Patch, Param, Delete, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseInterceptors,
+  UploadedFiles,
+  Patch,
+  Param,
+  Get,
+} from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
 import { Property } from './entities/property.entity';
@@ -8,7 +17,10 @@ import { ObjectIdValidationPipe } from 'src/common/pipes/object-id-validation.pi
 
 @Controller('property')
 export class PropertyController {
-  constructor(private readonly propertyService: PropertyService) {}
+  constructor(
+    private readonly imageService: ImageService,
+    private readonly propertyService: PropertyService,
+  ) { }
 
   @Get(':id')
   async find(
@@ -21,9 +33,8 @@ export class PropertyController {
   @UseInterceptors(FilesInterceptor('images'))
   async create(
     @UploadedFiles() files: Express.Multer.File[],
-    @Body() createPropertyDto: CreatePropertyDto
+    @Body() createPropertyDto: CreatePropertyDto,
   ): Promise<Property> {
-
     const imageUrls = await this.imageService.uploadImages(files);
 
     const propertyData = {
