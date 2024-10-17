@@ -11,11 +11,9 @@ export class PropertyService {
     @InjectModel(Property.name) private propertyModel: Model<Property>,
   ) { }
 
-  async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
+   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
     const { title, description, price, photos, max_people, tags } =
       createPropertyDto;
-
-    await this.propertyModel.find().sort({ date: -1 });
 
     const newProperty = new this.propertyModel({
       title,
@@ -26,15 +24,11 @@ export class PropertyService {
       tags,
     });
 
-    return await newProperty.save();
+    return newProperty.save();
   }
 
   findAll() {
     return `This action returns all property`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} property`;
   }
 
   async update(
