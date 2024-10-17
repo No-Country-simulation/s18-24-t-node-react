@@ -1,10 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-
+import { Document } from 'mongoose';
 
 @Schema({ timestamps: false })
 export class Property extends Document {
-  @Prop({required: true})
+  @Prop({ required: true })
   title: string;
 
   @Prop({ required: true })
@@ -14,11 +13,13 @@ export class Property extends Document {
   price: number;
 
   @Prop({ required: true })
-  availabilityDate: Date;
-
-  @Prop({ required: true })
   photos: string[];
-  
+
+  @Prop()
+  max_people: number;
+
+  @Prop()
+  tags: string[];
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);
