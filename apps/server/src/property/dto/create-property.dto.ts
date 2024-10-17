@@ -1,4 +1,5 @@
-import { IsString, IsNumber, IsDateString, IsArray, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsArray, IsNotEmpty, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreatePropertyDto {
     @IsString()
@@ -9,14 +10,17 @@ export class CreatePropertyDto {
     @IsNotEmpty()
     readonly description: string;
 
+    @Type(() => Number)
     @IsNumber()
     @IsNotEmpty()
     readonly price: number;
 
-    @IsDateString()
+    @IsString()
+    @IsNotEmpty()
     readonly availabilityDate: string;
 
     @IsArray()
+    @IsOptional()
     @IsString({ each: true })
-    readonly photos: string[];
+    readonly photos?: string[]; 
 }
