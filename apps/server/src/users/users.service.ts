@@ -1,28 +1,69 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
 
+import { Injectable, BadRequestException ,UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { JwtService } from '@nestjs/jwt';
-
 import { Model } from 'mongoose';
-import { compare } from 'bcrypt';
-
-import { LoginUserDto } from './dto';
 import { User } from './entities/user.entity';
-
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
+import { LoginUserDto } from './dto';
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    private jwtService: JwtService,
-  ) { }
+  constructor(@InjectModel(User.name) private userModel: Model<User>,
+  private jwtService: JwtService) {}
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const { name, email, password, mobileNumber, birthDate, nationality } = createUserDto;
+    const emailToLowerCase = email.toLowerCase();
+    const existingUser = await this.userModel.findOne({ email: emailToLowerCase });
+
+    if (existingUser) {
+      throw new BadRequestException('Email already in use');
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new this.userModel({
+      name,
+      email: emailToLowerCase,
+      password: hashedPassword,
+      mobileNumber,
+      birthDate,
+      nationality,
+    });
+
+    return newUser.save();
+  }
+
+  async findOneByEmail(email: string) {
+    const user = await this.userModel.findOne({ email });
+
+    if (!user)
+      throw new NotFoundException(`User with email ${email} not exists`);
+
+    return user;
+  }
+
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
+  }
+
+  async findOne(id: string): Promise<User> {
+    return this.userModel.findById(id).exec();
+  }
+   
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();
+  }
+
+  async remove(id: string): Promise<User> {
+    return this.userModel.findByIdAndDelete(id).exec(); 
+  }
 
   async login(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
-
+    console.log(email,password);
     const emailToLowerCase = email.toLowerCase();
 
     const user = await this.findOneByEmail(emailToLowerCase);
@@ -46,17 +87,9 @@ export class UsersService {
     };
   }
 
-  async findOneByEmail(email: string) {
-    const user = await this.userModel.findOne({ email });
-
-    if (!user)
-      throw new NotFoundException(`User with email ${email} not exists`);
-
-    return user;
-  }
-
   private generateJwt(data: { id: string }): string {
     const token = this.jwtService.sign(data);
     return token;
   }
 }
+  
