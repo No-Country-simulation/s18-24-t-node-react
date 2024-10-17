@@ -1,13 +1,11 @@
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
-  // ArrayMinSize,
   IsArray,
   IsNumber,
   IsOptional,
   IsString,
   IsUrl,
-  // IsUrl,
   Min,
 } from 'class-validator';
 

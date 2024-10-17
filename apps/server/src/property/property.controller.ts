@@ -1,3 +1,4 @@
+import { PropertyParamsDto } from './dto/property-params.dto';
 import {
   Controller,
   Post,
@@ -29,38 +30,9 @@ export class PropertyController {
   ): Promise<Property> {
     return this.propertyService.findOneById(propertyId);
   }
-
-  @Post('register')
-  @UseInterceptors(FilesInterceptor('images'))
-  async create(
-    @UploadedFiles() files: Express.Multer.File[],
-    @Body() createPropertyDto: CreatePropertyDto,
-  ): Promise<Property> {
-    const imageUrls = await this.imageService.uploadImages(files);
-
-    const propertyData = {
-      ...createPropertyDto,
-      photos: imageUrls,
-    };
-
-    return this.propertyService.create(propertyData);
-  }
-
-  @Get('get/:id')
-  async findOneById(@Param('id') id: string) {
-    return this.propertyService.findOneById(id);
-  }
-
-  @Delete('delete/:id')
-  async remove(@Param('id') id: number) {
-    return this.propertyService.remove(id);
-  }
-
-  @Patch(':id')
-  async update(
-    @Param('id', ObjectIdValidationPipe) propertyId: string,
-    @Body() updatePropertyDto: UpdatePropertyDto,
-  ): Promise<Property> {
-    return this.propertyService.update(propertyId, updatePropertyDto);
+  
+  @Get()
+  async findAll(@Query() filterQuery: PropertyParamsDto) {
+    return await this.propertyService.findAll(filterQuery);
   }
 }
