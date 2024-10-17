@@ -1,38 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Query, Delete } from '@nestjs/common';
+import { PropertyParamsDto } from './dto/property-params.dto';
+import {
+  Controller,
+  Post,
+  Body,
+  UseInterceptors,
+  UploadedFiles,
+  Patch,
+  Param,
+  Get,
+  Delete,
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
 import { Property } from './entities/property.entity';
-import { CreatePropertyDto } from './dto/create-property.dto';
-import { PropertyParamsDto } from './dto/property-params.dto';
-import { UpdatePropertyDto } from './dto/update-property.dto';
+import { ImageService } from './image.service';
+import { CreatePropertyDto, UpdatePropertyDto } from './dto';
+import { ObjectIdValidationPipe } from 'src/common/pipes/object-id-validation.pipe';
 
 @Controller('property')
 export class PropertyController {
-  constructor(private readonly propertyService: PropertyService) {}
+  constructor(
+    private readonly imageService: ImageService,
+    private readonly propertyService: PropertyService,
+  ) { }
 
-  @Post('register') 
-  async create(@Body() createPropertyDto: CreatePropertyDto): Promise<Property> {
-    return this.propertyService.create(createPropertyDto);
+  @Get(':id')
+  async find(
+    @Param('id', ObjectIdValidationPipe) propertyId: string,
+  ): Promise<Property> {
+    return this.propertyService.findOneById(propertyId);
   }
   
   @Get()
   async findAll(@Query() filterQuery: PropertyParamsDto) {
     return await this.propertyService.findAll(filterQuery);
   }
-
-  /*
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.propertyService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePropertyDto: UpdatePropertyDto) {
-    return this.propertyService.update(+id, updatePropertyDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.propertyService.remove(+id);
-  }
-  */
 }

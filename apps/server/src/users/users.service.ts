@@ -1,5 +1,9 @@
-
-import { Injectable, BadRequestException ,UnauthorizedException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './entities/user.entity';
@@ -11,13 +15,18 @@ import { compare } from 'bcrypt';
 import { LoginUserDto } from './dto';
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>,
-  private jwtService: JwtService) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const { name, email, password, mobileNumber, birthDate, nationality } = createUserDto;
+    const { name, email, password, mobileNumber, birthDate, nationality } =
+      createUserDto;
     const emailToLowerCase = email.toLowerCase();
-    const existingUser = await this.userModel.findOne({ email: emailToLowerCase });
+    const existingUser = await this.userModel.findOne({
+      email: emailToLowerCase,
+    });
 
     if (existingUser) {
       throw new BadRequestException('Email already in use');
@@ -52,18 +61,19 @@ export class UsersService {
   async findOne(id: string): Promise<User> {
     return this.userModel.findById(id).exec();
   }
-   
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();
+    return this.userModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec();
   }
 
   async remove(id: string): Promise<User> {
-    return this.userModel.findByIdAndDelete(id).exec(); 
+    return this.userModel.findByIdAndDelete(id).exec();
   }
 
   async login(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
-    console.log(email,password);
     const emailToLowerCase = email.toLowerCase();
 
     const user = await this.findOneByEmail(emailToLowerCase);
@@ -92,4 +102,3 @@ export class UsersService {
     return token;
   }
 }
-  

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -13,24 +13,19 @@ export class PropertyService {
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    Logger.log('Se registra una nueva propiedad...');
-    const { title, description, price, photos } = createPropertyDto;
-
-    /*
-    const existingProperty = await this.propertyModel.findOne({ email });
-    if (existingProperty) {
-      throw new BadRequestException('Email already in use');
-    }
-    */
+    const { title, description, price, max_people, tags, photos } =
+      createPropertyDto;
 
     const newProperty = new this.propertyModel({
       title,
       description,
       price,
       photos,
+      max_people,
+      tags,
     });
 
-    return await newProperty.save();
+    return newProperty.save();
   }
 
   async findAll(params: PropertyParamsDto) {
@@ -64,15 +59,31 @@ export class PropertyService {
     return await query.exec(); // Ejecutar la consulta con exec()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} property`;
+  async update(
+    id: string,
+    updatePropertyDto: UpdatePropertyDto,
+  ): Promise<Property> {
+    await this.findOneById(id);
+
+    const updatedProperty = this.propertyModel.findByIdAndUpdate(
+      id,
+      updatePropertyDto,
+      { new: true },
+    );
+
+    return updatedProperty;
   }
 
-  update(id: number, updatePropertyDto: UpdatePropertyDto) {
-    return `This action updates a #${id} property`;
+  async remove(id: number): Promise<Property> {
+    return this.propertyModel.findByIdAndDelete(id).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} property`;
+  async findOneById(propertyId: string): Promise<Property> {
+    const property = await this.propertyModel.findById(propertyId);
+
+    if (!property)
+      throw new NotFoundException(`Property with id ${propertyId} not found`);
+
+    return property;
   }
 }
