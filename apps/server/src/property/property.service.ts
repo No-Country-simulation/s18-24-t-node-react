@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -12,8 +12,8 @@ export class PropertyService {
   ) { }
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    Logger.log('Se registra una nueva propiedad...');
-    const { title, description, price, photos } = createPropertyDto;
+    const { title, description, price, photos, max_people, tags } =
+      createPropertyDto;
 
     await this.propertyModel.find().sort({ date: -1 });
 
@@ -22,6 +22,8 @@ export class PropertyService {
       description,
       price,
       photos,
+      max_people,
+      tags,
     });
 
     return await newProperty.save();
