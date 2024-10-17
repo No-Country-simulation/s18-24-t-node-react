@@ -9,8 +9,10 @@ import { configureCloudinary } from '../cloudinaryConfig';
 
 @Module({
   imports: [
-    ConfigModule, // Se importa ConfigModule para acceder a las variables de entorno
-    MongooseModule.forFeature([{ name: Property.name, schema: PropertySchema }]),
+    ConfigModule,
+    MongooseModule.forFeature([
+      { name: Property.name, schema: PropertySchema },
+    ]),
   ],
   controllers: [PropertyController],
   providers: [

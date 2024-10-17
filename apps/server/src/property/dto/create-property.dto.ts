@@ -1,26 +1,33 @@
-import { IsString, IsNumber, IsArray, IsNotEmpty, IsOptional } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Min,
+} from 'class-validator';
 
 export class CreatePropertyDto {
-    @IsString()
-    @IsNotEmpty()
-    readonly title: string;
+  @IsString()
+  readonly title: string;
 
-    @IsString()
-    @IsNotEmpty()
-    readonly description: string;
+  @IsString()
+  readonly description: string;
 
-    @Type(() => Number)
-    @IsNumber()
-    @IsNotEmpty()
-    readonly price: number;
+  @IsNumber()
+  readonly price: number;
 
-    @IsString()
-    @IsNotEmpty()
-    readonly availabilityDate: string;
+  @ArrayMinSize(3)
+  @IsUrl({}, { each: true })
+  readonly photos: string[];
 
-    @IsArray()
-    @IsOptional()
-    @IsString({ each: true })
-    readonly photos?: string[]; 
+  @IsNumber()
+  @Min(1)
+  readonly max_people: number;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  readonly tags?: string[];
 }
