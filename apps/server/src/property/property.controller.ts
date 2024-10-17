@@ -9,6 +9,7 @@ import {
   Param,
   Get,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
