@@ -45,6 +45,16 @@ export class PropertyController {
     return this.propertyService.create(propertyData);
   }
 
+  @Get('get/:id')
+  async findOneById(@Param('id') id: string) {
+    return this.propertyService.findOneById(id);
+  }
+
+  @Delete('delete/:id')
+  async remove(@Param('id') id: number) {
+    return this.propertyService.remove(id);
+  }
+
   @Patch(':id')
   async update(
     @Param('id', ObjectIdValidationPipe) propertyId: string,
