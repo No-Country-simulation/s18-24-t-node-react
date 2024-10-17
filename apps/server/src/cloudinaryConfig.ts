@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from 'cloudinary'; // Importa la versión 2 del SDK de Cloudinary
+import { v2 as cloudinary } from 'cloudinary'; // Se importa la versión 2 del SDK de Cloudinary
 import { ConfigService } from '@nestjs/config';
 
 export const configureCloudinary = (configService: ConfigService) => {
@@ -16,8 +16,7 @@ export const configureCloudinary = (configService: ConfigService) => {
     api_secret: apiSecret,
   });
 
-  return cloudinary; // Devuelve la instancia de Cloudinary configurada
+  return cloudinary;
 };
 
-// Si necesitas acceder a `cloudinary` directamente en otro lugar, puedes exportarlo
 export default cloudinary;

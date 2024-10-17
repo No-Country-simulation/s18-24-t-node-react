@@ -5,12 +5,12 @@ import { ImageService } from './image.service';
 import { PropertyController } from './property.controller';
 import { Property, PropertySchema } from './entities/property.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { configureCloudinary } from '../cloudinaryConfig'; // Asegúrate de que la ruta sea correcta
+import { configureCloudinary } from '../cloudinaryConfig';
 
 @Module({
   imports: [
-    ConfigModule, // Importa ConfigModule para acceder a las variables de entorno
-    MongooseModule.forFeature([{ name: Property.name, schema: PropertySchema }]), // Configuración de Mongoose
+    ConfigModule, // Se importa ConfigModule para acceder a las variables de entorno
+    MongooseModule.forFeature([{ name: Property.name, schema: PropertySchema }]),
   ],
   controllers: [PropertyController],
   providers: [

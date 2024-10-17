@@ -13,22 +13,17 @@ export class PropertyService {
     Logger.log('Se registra una nueva propiedad...');
     const { title, description, price, availabilityDate, photos } = createPropertyDto;
 
-    /*
-    const existingProperty = await this.propertyModel.findOne({ email });
-    if (existingProperty) {
-      throw new BadRequestException('Email already in use');
-    }
-    */
+    const date = new Date(availabilityDate);
 
     const newProperty = new this.propertyModel({
       title,
       description,
       price,
-      availabilityDate, //Se puede enviar fecha mas la hora: 2024-10-15T14:30:00Z
+      availabilityDate: date, //También se puede enviar fecha mas la hora: 2024-10-15T14:30:00Z
       photos
     });
 
-    return await newProperty.save();
+    return newProperty.save();
   }
 
   findAll() {
