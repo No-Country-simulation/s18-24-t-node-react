@@ -3,10 +3,17 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { LoginUserDto } from './dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post('login')
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.usersService.login(loginUserDto);
+
+  }
 
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
@@ -34,18 +41,5 @@ export class UsersController {
   @Delete('delete/:id')
   async remove(@Param('id') id: string) {
     return this.usersService.remove(id);
-
-
-import { UsersService } from './users.service';
-import { LoginUserDto } from './dto';
-
-@Controller('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
-
-  @Post()
-  login(@Body() loginUserDto: LoginUserDto) {
-    return this.usersService.login(loginUserDto);
-
   }
 }

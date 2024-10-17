@@ -1,9 +1,27 @@
-export class CreateUserDto {
-    readonly name: string;
-    readonly email: string;
-    password: string;
-    readonly  mobileNumber: string;
-    readonly birthDate: Date;
-    readonly nationality: string;
+import { IsString, IsEmail, IsNotEmpty, IsDateString, IsOptional } from 'class-validator';
 
+export class CreateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  mobileNumber: string;
+
+  @IsDateString()
+  @IsOptional()
+  birthDate?: Date;
+
+  @IsString()
+  @IsOptional()
+  nationality?: string;
 }

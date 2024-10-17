@@ -1,20 +1,24 @@
 
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException ,UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
-
+import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
+import { LoginUserDto } from './dto';
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>,
+  private jwtService: JwtService) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { name, email, password, mobileNumber, birthDate, nationality } = createUserDto;
+    const emailToLowerCase = email.toLowerCase();
+    const existingUser = await this.userModel.findOne({ email: emailToLowerCase });
 
-    const existingUser = await this.userModel.findOne({ email });
     if (existingUser) {
       throw new BadRequestException('Email already in use');
     }
@@ -22,7 +26,7 @@ export class UsersService {
 
     const newUser = new this.userModel({
       name,
-      email,
+      email: emailToLowerCase,
       password: hashedPassword,
       mobileNumber,
       birthDate,
@@ -31,12 +35,16 @@ export class UsersService {
 
     return newUser.save();
   }
-  /*
- async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+
+  async findOneByEmail(email: string) {
+    const user = await this.userModel.findOne({ email });
+
+    if (!user)
+      throw new NotFoundException(`User with email ${email} not exists`);
+
+    return user;
   }
-  */ 
+
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
@@ -51,27 +59,11 @@ export class UsersService {
 
   async remove(id: string): Promise<User> {
     return this.userModel.findByIdAndDelete(id).exec(); 
-
-
-import { InjectModel } from '@nestjs/mongoose';
-import { JwtService } from '@nestjs/jwt';
-
-import { Model } from 'mongoose';
-import { compare } from 'bcrypt';
-
-import { LoginUserDto } from './dto';
-import { User } from './entities/user.entity';
-
-@Injectable()
-export class UsersService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    private jwtService: JwtService,
-  ) { }
+  }
 
   async login(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
-
+    console.log(email,password);
     const emailToLowerCase = email.toLowerCase();
 
     const user = await this.findOneByEmail(emailToLowerCase);
@@ -95,17 +87,9 @@ export class UsersService {
     };
   }
 
-  async findOneByEmail(email: string) {
-    const user = await this.userModel.findOne({ email });
-
-    if (!user)
-      throw new NotFoundException(`User with email ${email} not exists`);
-
-    return user;
-  }
-
   private generateJwt(data: { id: string }): string {
     const token = this.jwtService.sign(data);
     return token;
   }
 }
+  
