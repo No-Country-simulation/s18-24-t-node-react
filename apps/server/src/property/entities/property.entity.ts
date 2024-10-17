@@ -1,7 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema({ timestamps: false })
+@Schema({
+  timestamps: true,
+  toJSON: {
+    transform: function (doc, ret) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.__v;
+    },
+  },
+})
 export class Property extends Document {
   @Prop({ required: true })
   title: string;
