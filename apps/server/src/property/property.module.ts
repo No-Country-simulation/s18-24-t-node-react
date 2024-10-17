@@ -6,7 +6,9 @@ import { Property, PropertySchema } from './entities/property.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Property.name, schema: PropertySchema }])
+    MongooseModule.forFeature([
+      { name: Property.name, schema: PropertySchema },
+    ]),
   ],
   controllers: [PropertyController],
   providers: [PropertyService],
