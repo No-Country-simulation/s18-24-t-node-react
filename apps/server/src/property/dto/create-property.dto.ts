@@ -1,10 +1,13 @@
+import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
+  // ArrayMinSize,
   IsArray,
   IsNumber,
   IsOptional,
   IsString,
   IsUrl,
+  // IsUrl,
   Min,
 } from 'class-validator';
 
@@ -15,13 +18,16 @@ export class CreatePropertyDto {
   @IsString()
   readonly description: string;
 
+  @Type(() => Number)
   @IsNumber()
   readonly price: number;
 
+  @IsOptional()
   @ArrayMinSize(3)
   @IsUrl({}, { each: true })
-  readonly photos: string[];
+  readonly photos?: string[];
 
+  @Type(() => Number)
   @IsNumber()
   @Min(1)
   readonly max_people: number;
