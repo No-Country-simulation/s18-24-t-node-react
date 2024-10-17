@@ -1,36 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param } from '@nestjs/common';
+
 import { PropertyService } from './property.service';
 import { Property } from './entities/property.entity';
-import { CreatePropertyDto } from './dto/create-property.dto';
-import { UpdatePropertyDto } from './dto/update-property.dto';
+import { CreatePropertyDto, UpdatePropertyDto } from './dto';
+import { ObjectIdValidationPipe } from 'src/common/pipes/object-id-validation.pipe';
 
 @Controller('property')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
 
-  @Post('register') 
-  async create(@Body() createPropertyDto: CreatePropertyDto): Promise<Property> {
+  @Post('register')
+  async create(
+    @Body() createPropertyDto: CreatePropertyDto,
+  ): Promise<Property> {
     return this.propertyService.create(createPropertyDto);
-  }
-  /*
-  @Get()
-  findAll() {
-    return this.propertyService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.propertyService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePropertyDto: UpdatePropertyDto) {
-    return this.propertyService.update(+id, updatePropertyDto);
+  async update(
+    @Param('id', ObjectIdValidationPipe) propertyId: string,
+    @Body() updatePropertyDto: UpdatePropertyDto,
+  ) {
+    return this.propertyService.update(propertyId, updatePropertyDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.propertyService.remove(+id);
-  }
-    */
 }
