@@ -8,6 +8,7 @@ import {
   Param,
   Get,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
@@ -15,6 +16,7 @@ import { Property } from './entities/property.entity';
 import { ImageService } from './image.service';
 import { CreatePropertyDto, UpdatePropertyDto } from './dto';
 import { ObjectIdValidationPipe } from 'src/common/pipes/object-id-validation.pipe';
+import { PropertyParamsDto } from './dto/property-params.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -22,6 +24,11 @@ export class PropertyController {
     private readonly imageService: ImageService,
     private readonly propertyService: PropertyService,
   ) { }
+
+  @Get()
+  async findAll(@Query() filterQuery: PropertyParamsDto) {
+    return await this.propertyService.findAll(filterQuery);
+  }
 
   @Get(':id')
   async find(
