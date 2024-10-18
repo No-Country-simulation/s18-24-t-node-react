@@ -6,6 +6,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('Booked')
@@ -17,6 +18,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // Global pipes for validation
+
+  app.enableCors();
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
