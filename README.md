@@ -58,7 +58,7 @@ Este proyecto es una plataforma de comercio electrónico que facilita la compra 
     <img src="https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png" alt="Git Logo" width="100">
 </a>
 <a href="https://github.com" target="_blank">
-    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" width="100">
+    <img src="https://seeklogo.com/images/G/github-logo-5F384D0265-seeklogo.com.png" alt="GitHub Logo" width="100">
 </a>
 
 <h3>Alojamiento</h3>
