@@ -9,7 +9,7 @@ on:
     types: [closed]
     paths:
       - "apps/server/**"
-      - ".github/workflows/deploy-backend.yml"
+      - ".github/workflows/deploy_backend.yml"
 
 jobs:
   deploy_production:
