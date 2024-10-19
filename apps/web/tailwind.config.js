@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        color_form_button:"#318F51",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
