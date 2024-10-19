@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import cloudinary from '../cloudinaryConfig';
 
-import { Multer } from 'multer';
-
 @Injectable()
 export class ImageService {
   async uploadImages(files: Express.Multer.File[]): Promise<string[]> {

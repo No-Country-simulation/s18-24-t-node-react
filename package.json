@@ -7,7 +7,7 @@
     "start:dev:server": "npm run start:dev --prefix ./apps/server",
     "start:dev:web": "npm run dev --prefix ./apps/web",
     "dev": "npm run start:dev:server & npm run start:dev:web",
-    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky; fi"
+    "prepare": "if [ \"$HUSKY\" != \"disable\" ]; then husky; fi"
   },
   "workspaces": [
     "apps/server",
