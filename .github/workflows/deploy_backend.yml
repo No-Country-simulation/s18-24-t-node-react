@@ -25,7 +25,7 @@ jobs:
       - name: Install npm dependencies
         run: | 
           cd apps/server
-          npm i
+          npm i --production
 
       - name: Build NestJS Project
         run: | 
