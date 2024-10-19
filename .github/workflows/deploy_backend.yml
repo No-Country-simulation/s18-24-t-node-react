@@ -27,6 +27,9 @@ jobs:
           cd apps/server
           npm i --production
 
+      - name: Install NestJS CLI
+        run: npm install -g @nestjs/cli
+
       - name: Build NestJS Project
         run: | 
           cd apps/server
