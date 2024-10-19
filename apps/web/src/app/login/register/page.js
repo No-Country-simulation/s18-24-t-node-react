@@ -61,8 +61,10 @@ export default function RegisterForm(){
                 ...prevFormData,
                 [key]: value,}))          
         };
+        
         const response = await userRegister(formData)
-        alert(response)}
+        console.log(response)
+        }
         else{alert("intente nuevamente")}
     }
 
