@@ -23,17 +23,15 @@ jobs:
       
         run: npm install --global vercel@latest
       - name: Install npm dependencies
-        run: | 
-          cd apps/server
-          npm i --production
+        run: npm i --production
 
-      - name: Install NestJS CLI
-        run: npm install -g @nestjs/cli
+      # - name: Install NestJS CLI
+      #   run: npm install -g @nestjs/cli
 
       - name: Build NestJS Project
         run: | 
           cd apps/server
-          npm run build
+          npx nest build
 
       - name: Pull Vercel Environment Information
         run: |
