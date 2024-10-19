@@ -29,7 +29,7 @@ export class PropertyController {
 
   @ApiOperation({ summary: 'Find all properties' })
   @ApiResponse({ status: 200, description: 'Returns all properties success' })
-  @ApiResponse({ status: 404, description: 'No properties found'})
+  @ApiResponse({ status: 404, description: 'No properties found' })
   @Get()
   async findAll(@Query() filterQuery: PropertyParamsDto) {
     return await this.propertyService.findAll(filterQuery);
@@ -37,17 +37,17 @@ export class PropertyController {
 
   @ApiOperation({ summary: 'Find a property by id' })
   @ApiResponse({ status: 200, description: 'Returns a property success' })
-  @ApiResponse({ status: 404, description: 'No property found'})
+  @ApiResponse({ status: 404, description: 'No property found' })
   @Get(':id')
   async find(
     @Param('id', ObjectIdValidationPipe) propertyId: string,
   ): Promise<Property> {
     return this.propertyService.findOneById(propertyId);
   }
-  
+
   @ApiOperation({ summary: 'Register a new property' })
   @ApiResponse({ status: 200, description: 'Register property success' })
-  @ApiResponse({ status: 404, description: 'Property not created'})
+  @ApiResponse({ status: 404, description: 'Property not created' })
   @Post('register')
   @UseInterceptors(FilesInterceptor('images'))
   async create(
@@ -65,22 +65,22 @@ export class PropertyController {
   }
   @ApiOperation({ summary: 'Get property by id' })
   @ApiResponse({ status: 200, description: 'Returns a property success' })
-  @ApiResponse({ status: 404, description: 'Property not found'})
+  @ApiResponse({ status: 404, description: 'Property not found' })
   @Get('get/:id')
   async findOneById(@Param('id') id: string) {
     return this.propertyService.findOneById(id);
   }
   @ApiOperation({ summary: 'Delete property by id' })
   @ApiResponse({ status: 200, description: 'Deleted property success' })
-  @ApiResponse({ status: 404, description: 'Property not deleted'})
+  @ApiResponse({ status: 404, description: 'Property not deleted' })
   @Delete('delete/:id')
   async remove(@Param('id') id: number) {
     return this.propertyService.remove(id);
   }
 
-  @ApiOperation({ summary: 'Patch property by id'})
+  @ApiOperation({ summary: 'Patch property by id' })
   @ApiResponse({ status: 200, description: 'Patched property success' })
-  @ApiResponse({ status: 404, description: 'Property not patched'})
+  @ApiResponse({ status: 404, description: 'Property not patched' })
   @Patch(':id')
   async update(
     @Param('id', ObjectIdValidationPipe) propertyId: string,
