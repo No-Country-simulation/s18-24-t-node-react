@@ -4,20 +4,12 @@
     {
       "src": "apps/server/dist/main.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "apps/web/package.json",
-      "use": "@vercel/next"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
       "dest": "apps/server/dist/main.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "apps/web/index.html"
     }
-  ]
+    ]
 }
