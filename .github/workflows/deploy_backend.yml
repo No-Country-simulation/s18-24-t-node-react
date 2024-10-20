@@ -29,7 +29,9 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Install npm dependencies
-        run: npm install
+        run: |
+          cd apps/server
+          npm install
 
       - name: Build NestJS Project
         run: |

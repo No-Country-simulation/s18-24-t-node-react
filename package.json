@@ -26,8 +26,6 @@
     "husky": "^9.1.6"
   },
   "dependencies": {
-    "@nestjs/mongoose": "^10.0.10",
-    "@nestjs/swagger": "^7.4.2",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "mongodb": "^6.9.0",
