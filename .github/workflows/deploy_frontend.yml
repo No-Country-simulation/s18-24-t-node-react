@@ -41,4 +41,5 @@ jobs:
             --dir apps/web/dist \
             --site ${{secrets.NETLIFY_SITE_ID}} \
             --auth ${{secrets.NETLIFY_API_TOKEN}} \
+            --filter apps/web \
             $prod_flag
