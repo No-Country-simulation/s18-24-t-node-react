@@ -1,7 +1,7 @@
-name: Netlify Deploy FrontEnd
+name: Vercel Deploy FrontEnd
 
 env:
-  BRANCH_NAME: ${{github.ref_name}}
+  BRANCH_NAME: ${{ github.ref_name }}
 
 on:
   push: 
@@ -18,28 +18,18 @@ jobs:
       - name: Repository Checkout
         uses: actions/checkout@v3
       
-      - name: Setup Nodejs
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with: 
           node-version: 20
 
-      - name: Install Netlify CLI
-        run: npm install --global netlify-cli
-
       - name: Install npm dependencies
-        run: npm i
+        run: npm install
 
-      - name: Build Nextjs Project
+      - name: Build Next.js Project
         run: npm run web:build
 
-      - name: Deploy to Netlify
-        id: netlify_deploy
+      - name: Deploy to Vercel
         run: |
-          prod_flag=""
-          if [ "$BRANCH_NAME" = "main" ]; then prod_flag="--prod"; fi
-          netlify deploy \
-            --dir apps/web/.next \
-            --site ${{secrets.NETLIFY_SITE_ID}} \
-            --auth ${{secrets.NETLIFY_API_TOKEN}} \
-            --filter apps/web \
-            $prod_flag
+          npm install -g vercel
+          vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} --cwd apps/web
