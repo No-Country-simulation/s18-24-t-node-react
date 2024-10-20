@@ -7,9 +7,13 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
 
 on:
-  push: 
-    branches: 
+  # push: 
+  #   branches: 
+  #     - develop
+  pull_request:
+    branches:
       - develop
+    types: [closed]
     paths:
       - "apps/web/**"
       - ".github/workflows/deploy_frontend.yml"
