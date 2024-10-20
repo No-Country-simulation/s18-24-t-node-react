@@ -1,0 +1,45 @@
+name: Netlify Deploy FrontEnd
+
+env:
+  BRANCH_NAME: ${{github.ref_name}}
+
+on:
+  push: 
+    branches: 
+      - develop
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/deploy_frontend.yml"
+
+jobs:
+  deploy_production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Nodejs
+        uses: actions/setup-node@v4
+        with: 
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Netlify CLI
+        run: npm install --global netlify-cli
+
+      - name: Install npm dependencies
+        run: npm i
+
+      - name: Build Nextjs Project
+        run: npm run web:build
+
+      - name: Deploy to Netlify
+        id: netlify_deploy
+        run: |
+          prod_flag=""
+          if [ "$BRANCH_NAME" = "main" ]; then prod_flag="--prod"; fi
+          netlify deploy \
+            --dir dist \
+            --site ${{secrets.NETLIFY_SITE_ID}} \
+            --auth ${{secrets.NETLIFY_API_TOKEN}} \
+            $prod_flag
