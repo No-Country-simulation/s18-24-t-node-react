@@ -1,4 +1,4 @@
-import "./login.css";
+import "./auth.css";
 import { HeaderBooked } from "../components/headerBooked";
 
 
