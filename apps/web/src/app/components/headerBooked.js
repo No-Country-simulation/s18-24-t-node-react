@@ -12,7 +12,7 @@ export function HeaderBooked() {
       className="w-full h-[100px] flex-row shadow-md"
       style={{ backgroundColor: "#5FA777", alignContent: "center" }}
     >
-      <Link href={"/login"}>
+      <Link href={"/auth/login"}>
         <h1
           className={rem.className}
           style={{ fontSize: "70px", color: "white", marginLeft: "20px" }}
