@@ -17,9 +17,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // Global pipes for validation
+  app.enableCors({
+    origin: ['https://bookedfrontend.vercel.app', 'http://localhost:3000'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
-  app.enableCors();
 
   app.useGlobalPipes(
     new ValidationPipe({
