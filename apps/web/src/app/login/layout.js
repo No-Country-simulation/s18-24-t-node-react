@@ -1,4 +1,6 @@
 import "./login.css";
+import { HeaderBooked } from "../components/headerBooked";
+
 
 export const metadata = {
   title: "Bienvenido a Booked",
@@ -8,12 +10,7 @@ export const metadata = {
 export default function loginLayaout({ children }) {
   return (
     <>
-      <header
-        className="w-full p-2 flex-row shadow-md"
-        style={{ backgroundColor: "#5FA777", alignContent: "center" }}
-      >
-        <h1 className="text-7xl text-white">Booked</h1>
-      </header>
+      <HeaderBooked/>
       {children}
     </>
   );
