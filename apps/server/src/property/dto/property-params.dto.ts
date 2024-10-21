@@ -1,0 +1,48 @@
+import {
+  IsString,
+  IsNumber,
+  IsArray,
+  IsOptional,
+  IsIn,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+
+type Orders = 'ASC' | 'DES';
+
+export class PropertyParamsDto {
+  @ApiPropertyOptional({
+    example: 'Beach House',
+    description: 'Title of property to search',
+  })
+  @IsOptional()
+  @IsString()
+  title: string;
+
+  @ApiPropertyOptional({
+    example: 100,
+    description: 'Max price of property to search',
+  })
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  price: number;
+
+  @ApiPropertyOptional({
+    example: ['wifi', 'pool'],
+    description: 'List of tags to search',
+    type: [String],
+  })
+  @IsOptional()
+  @IsArray()
+  tags: string[];
+
+  @ApiPropertyOptional({
+    example: 'ASC',
+    description: 'The order of results must be ASC or DES',
+    enum: ['ASC', 'DES'],
+  })
+  @IsIn(['ASC', 'DES'])
+  @IsOptional()
+  orderBy: Orders;
+}
