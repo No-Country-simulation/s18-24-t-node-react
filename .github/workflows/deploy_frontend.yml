@@ -1,9 +1,10 @@
-name: Vercel Deploy Backend
+name: Vercel Deploy FrontEnd
 
 env:
   HUSKY: 'disable'
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  BRANCH_NAME: ${{ github.ref_name }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID_FRONTEND }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
 
 on:
   # push: 
@@ -14,8 +15,8 @@ on:
       - develop
     types: [closed]
     paths:
-      - "apps/server/**"
-      - ".github/workflows/deploy_backend.yml"
+      - "apps/web/**"
+      - ".github/workflows/deploy_frontend.yml"
 
 jobs:
   deploy_production:
@@ -26,28 +27,28 @@ jobs:
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
-
+      
       - name: Install npm dependencies
         run: |
-          cd apps/server
+          cd apps/web
           npm install
 
-      - name: Build NestJS Project
+      - name: Build NextJS Project
         run: |
-          cd apps/server
+          cd apps/web
           npm run build
 
       - name: Pull Vercel Environment Information
         run: |
-          cd apps/server
+          cd apps/web
           vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         
       - name: Build Project Artifacts
         run: |
-          cd apps/server
+          cd apps/web
           vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         
       - name: Deploy Project Artifacts to Vercel
         run: |
-          cd apps/server
+          cd apps/web
           vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
