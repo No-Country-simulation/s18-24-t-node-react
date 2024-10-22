@@ -29,7 +29,7 @@ jobs:
 
       - name: Disable Husky
         run: |
-          npm config set prepare false
+          npm uninstall husky
 
       - name: Install npm dependencies
         run: |
