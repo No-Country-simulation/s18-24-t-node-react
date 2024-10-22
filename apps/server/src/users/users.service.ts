@@ -21,7 +21,9 @@ export class UsersService {
     private jwtService: JwtService,
   ) { }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<{ user: User; token: string }> {
     const { name, email, password, mobileNumber, birthDate, nationality } =
       createUserDto;
     const emailToLowerCase = email.toLowerCase();
@@ -34,7 +36,7 @@ export class UsersService {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new this.userModel({
+    const newUser = await this.userModel.create({
       name,
       email: emailToLowerCase,
       password: hashedPassword,
@@ -43,7 +45,12 @@ export class UsersService {
       nationality,
     });
 
-    return newUser.save();
+    const token = this.generateJwt({ id: newUser.id });
+
+    return {
+      user: newUser,
+      token,
+    };
   }
 
   async findOneByEmail(email: string) {
