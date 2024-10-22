@@ -1,4 +1,10 @@
-import { IsString, IsEmail, IsNotEmpty, IsDateString, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  IsDateString,
+  IsOptional,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
@@ -22,12 +28,20 @@ export class CreateUserDto {
   @IsNotEmpty()
   mobileNumber: string;
 
-  @ApiProperty({ example: '1990-01-01', description: 'User day of birth', required: false })
+  @ApiProperty({
+    example: '1990-01-01',
+    description: 'User day of birth',
+    required: false,
+  })
   @IsDateString()
   @IsOptional()
   birthDate?: Date;
 
-  @ApiProperty({ example: 'Argentina', description: 'User nationality', required: false })
+  @ApiProperty({
+    example: 'Argentina',
+    description: 'User nationality',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   nationality?: string;
