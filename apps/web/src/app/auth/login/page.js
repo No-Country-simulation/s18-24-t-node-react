@@ -2,6 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+
 const Login = () => {
    const router = useRouter();
   const [email, setEmail] = useState("");
@@ -11,8 +12,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/users/login", {
-        method: "POST",
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
+      method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
