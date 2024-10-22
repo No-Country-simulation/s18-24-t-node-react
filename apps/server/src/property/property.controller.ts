@@ -9,6 +9,7 @@ import {
   Get,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
@@ -18,6 +19,7 @@ import { CreatePropertyDto, UpdatePropertyDto } from './dto';
 import { ObjectIdValidationPipe } from 'src/common/pipes/object-id-validation.pipe';
 import { PropertyParamsDto } from './dto/property-params.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('property')
 @Controller('property')
@@ -50,6 +52,7 @@ export class PropertyController {
   @ApiResponse({ status: 404, description: 'Property not created' })
   @Post('register')
   @UseInterceptors(FilesInterceptor('images'))
+  @UseGuards(AuthGuard('jwt'))
   async create(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() createPropertyDto: CreatePropertyDto,
@@ -74,6 +77,7 @@ export class PropertyController {
   @ApiResponse({ status: 200, description: 'Deleted property success' })
   @ApiResponse({ status: 404, description: 'Property not deleted' })
   @Delete('delete/:id')
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id') id: number) {
     return this.propertyService.remove(id);
   }
@@ -82,6 +86,7 @@ export class PropertyController {
   @ApiResponse({ status: 200, description: 'Patched property success' })
   @ApiResponse({ status: 404, description: 'Property not patched' })
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   async update(
     @Param('id', ObjectIdValidationPipe) propertyId: string,
     @Body() updatePropertyDto: UpdatePropertyDto,
