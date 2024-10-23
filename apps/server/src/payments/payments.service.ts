@@ -40,5 +40,15 @@ export class PaymentsService {
 
     return session;
   }
+
+
+  async getPaymentDetails(sessionId: string) {
+    try {
+      const session = await this.stripe.checkout.sessions.retrieve(sessionId);
+      return session;
+    } catch (error) {
+      throw new Error(`Error al obtener los detalles del pago: ${error.message}`);
+    }
+  }
 }
 
