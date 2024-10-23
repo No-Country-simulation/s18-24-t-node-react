@@ -10,7 +10,7 @@ async function bootstrap() {
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('Booked')
-    .setDescription('Application for house reservations')
+    .setDescription('Booked is a property rental app that connects hosts with travelers seeking temporary stays. It offers easy property listings, flexible bookings, and secure payments, providing a seamless experience for both hosts and guests.')
     .setVersion('1.0')
     .build();
   
