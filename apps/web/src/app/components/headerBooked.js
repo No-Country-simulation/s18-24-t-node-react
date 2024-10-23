@@ -9,7 +9,7 @@ const rem = REM({
 export function HeaderBooked() {
   return (
     <header
-      className="w-full h-[100px] flex-row shadow-md"
+      className="w-full h-[100px] flex-row shadow-md col-span-2"
       style={{ backgroundColor: "#5FA777", alignContent: "center" }}
     >
       <Link href={"/auth/login"}>
