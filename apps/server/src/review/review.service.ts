@@ -7,8 +7,7 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class ReviewService {
-/*constructor(@InjectModel(Review.name) private readonly reviewModel) {}*/
-constructor(@InjectModel(Review.name) private readonly reviewModel: Model<Review>) {}
+constructor(@InjectModel(Review.name) private reviewModel: Model<Review>) {}
 
   async create(createReviewDto: CreateReviewDto) {
     const { property, guest, rating, comment } =
