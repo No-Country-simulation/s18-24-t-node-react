@@ -1,17 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable , NotFoundException,} from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Review } from './entities/review.entity';
+import { User } from '../users/entities/user.entity'
+import { Property } from '../property/entities/property.entity'
 import { Model } from 'mongoose';
 
 @Injectable()
 export class ReviewService {
-constructor(@InjectModel(Review.name) private reviewModel: Model<Review>) {}
+constructor(
+@InjectModel(Review.name) private reviewModel: Model<Review>,
+@InjectModel(User.name) private userModel: Model<User>,
+@InjectModel(Property.name) private propertyModel: Model<Property>
+
+) {}
 
   async create(createReviewDto: CreateReviewDto) {
     const { property, guest, rating, comment } =
     createReviewDto;
+
+    const propertyExist = await this.propertyModel.findById(property).exec();
+    if(!propertyExist){
+      throw new NotFoundException(`Property with ID ${property} not found`)
+    }
+
+    const userExist = await this.userModel.findById(guest).exec();
+    if(!userExist){
+      throw new NotFoundException(`User with ID ${guest} not found`)
+    }
 
     const newReview = new this.reviewModel({
       property,  
