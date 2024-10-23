@@ -6,10 +6,10 @@ import { Property } from '../../property/entities/property.entity';
 @Schema({ timestamps: true })
 export class Review extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Property', required: true })
-  property: Property;
+  property: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  guest: User;
+  guest: Types.ObjectId;
 
   @Prop({ required: true, min: 1, max: 5 })
   rating: number;

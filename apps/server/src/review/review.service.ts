@@ -27,17 +27,17 @@ constructor(@InjectModel(Review.name) private reviewModel: Model<Review>) {}
     return this.reviewModel.find().exec();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return this.reviewModel.findById(id).exec();
   }
 
-  async update(id: number, updateReviewDto: UpdateReviewDto) {
+  async update(id: string, updateReviewDto: UpdateReviewDto) {
     return this.reviewModel
       .findByIdAndUpdate(id, updateReviewDto, { new: true })
       .exec();
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return this.reviewModel.findByIdAndDelete(id).exec();
   }
 }

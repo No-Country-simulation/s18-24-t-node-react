@@ -4,8 +4,8 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-@ApiTags('review')
-@Controller('review')
+@ApiTags('reviews')
+@Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
@@ -29,7 +29,7 @@ export class ReviewController {
   @ApiResponse({ status: 200, description: 'Returns a review' })
   @ApiResponse({ status: 404, description: 'Review not found' })
   @Get('review/:id')
-  async findOne(@Param('id') id: number) {
+  async findOne(@Param('id') id: string) {
     return this.reviewService.findOne(id);
   }
 
@@ -37,7 +37,7 @@ export class ReviewController {
   @ApiResponse({ status: 200, description: 'Review updated successfully' })
   @ApiResponse({ status: 400, description: 'Review not actualized' })
   @Patch('patch/:id')
-  async update(@Param('id') id: number, @Body() updateReviewDto: UpdateReviewDto) {
+  async update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
     
     return this.reviewService.update(id, updateReviewDto);
   }
@@ -46,7 +46,7 @@ export class ReviewController {
   @ApiResponse({ status: 200, description: 'Deleted review successfully' })
   @ApiResponse({ status: 404, description: 'Review not deleted'})
   @Delete('delete/:id')
-  async remove(@Param('id') id: number) {
+  async remove(@Param('id') id: string) {
     return this.reviewService.remove(id);
   }
 }
