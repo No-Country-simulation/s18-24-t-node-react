@@ -26,10 +26,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^10.0.10",
-<<<<<<< HEAD
-=======
     "@nestjs/passport": "^10.0.3",
->>>>>>> 933df1541c80221b0c6bdd297585e6cf9a5deb50
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.4.2",
     "bcrypt": "^5.1.1",
