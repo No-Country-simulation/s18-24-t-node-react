@@ -104,6 +104,7 @@ export default function RegisterForm() {
   }
 
   return (
+    <div className="flex items-center justify-center">
     <div
       className="w-1/3 min-w-[500px] h-[80%] rounded-lg border-[#318F51] border-[.2px] my-4 shadow-md"
       id="formRegister"
@@ -221,6 +222,7 @@ export default function RegisterForm() {
           Crear cuenta
         </button>
       </form>
+    </div>
     </div>
   );
 }

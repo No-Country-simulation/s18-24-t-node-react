@@ -9,9 +9,9 @@ export const metadata = {
 
 export default function loginLayaout({ children }) {
   return (
-    <>
+    <div id="bodyLogin">
       <HeaderBooked/>
       {children}
-    </>
+    </div>
   );
 }

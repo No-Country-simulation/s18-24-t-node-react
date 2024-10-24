@@ -18,7 +18,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Title } from "@/app/components/title-menu";
 
@@ -52,10 +52,14 @@ export function GuestHost() {
               <FormItem>
                 <FormLabel>Número de cuenta bancaria</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" placeholder="Ingresa aquí los números de una cuenta para poder realizar cobros." {...field} />
+                  <Input
+                    className="bg-white"
+                    placeholder="Ingresa aquí los números de una cuenta para poder realizar cobros."
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
-                La cuenta bancaria debe ser a tu nombre.
+                  La cuenta bancaria debe ser a tu nombre.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -66,9 +70,11 @@ export function GuestHost() {
             name="avatar"
             render={() => (
               <FormItem>
-                <FormLabel>Foto de tu documento de identidad/pasaporte.</FormLabel>
+                <FormLabel>
+                  Foto de tu documento de identidad/pasaporte.
+                </FormLabel>
                 <FormDescription>
-                Sube foto de frente y dorso de tu documento.
+                  Sube foto de frente y dorso de tu documento.
                 </FormDescription>
                 <FormControl>
                   <Input type="file" multiple accept="image/png, image/jpeg" />
@@ -83,7 +89,8 @@ export function GuestHost() {
               <FormItem>
                 <FormLabel>Selfie / foto actualizada</FormLabel>
                 <FormDescription>
-                Por favor sube una selfie para que podamos validar tu identidad.
+                  Por favor sube una selfie para que podamos validar tu
+                  identidad.
                 </FormDescription>
                 <FormControl>
                   <Input type="file" accept="image/png, image/jpeg" />
@@ -96,9 +103,13 @@ export function GuestHost() {
             name="avatar"
             render={() => (
               <FormItem>
-                <FormLabel>Factura o recibo de algún servicio a tu nombre.</FormLabel>
+                <FormLabel>
+                  Factura o recibo de algún servicio a tu nombre.
+                </FormLabel>
                 <FormDescription>
-                Para constatar que la propiedad es tuya, debemos pedirte un recibo a tu nombre de algun servicio (ejemplo: luz, gas, agua).
+                  Para constatar que la propiedad es tuya, debemos pedirte un
+                  recibo a tu nombre de algun servicio (ejemplo: luz, gas,
+                  agua).
                 </FormDescription>
                 <FormControl>
                   <Input type="file" accept="image/png, image/jpeg" />
@@ -109,21 +120,24 @@ export function GuestHost() {
           <FormField
             control={form.control.avatar}
             name="avatar"
-            render={({field}) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Tipo de inmueble</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Elegir" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="casa">casa</SelectItem>
-                  <SelectItem value="departamento">departamento</SelectItem>
-                  <SelectItem value="habitacion">habitacion</SelectItem>
-                </SelectContent>
-              </Select>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Elegir" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="casa">casa</SelectItem>
+                    <SelectItem value="departamento">departamento</SelectItem>
+                    <SelectItem value="habitacion">habitacion</SelectItem>
+                  </SelectContent>
+                </Select>
               </FormItem>
             )}
           />
@@ -145,7 +159,11 @@ export function GuestHost() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input className="bg-white" placeholder="Provincia" {...field} />
+                  <Input
+                    className="bg-white"
+                    placeholder="Provincia"
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -167,7 +185,11 @@ export function GuestHost() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input className="bg-white" placeholder="Dirección (calle y numeración)" {...field} />
+                  <Input
+                    className="bg-white"
+                    placeholder="Dirección (calle y numeración)"
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -179,7 +201,7 @@ export function GuestHost() {
               <FormItem>
                 <FormLabel>Agregar fotos de la propiedad</FormLabel>
                 <FormDescription>
-                Puedes subir hasta 20 archivos formato imagen .jpg o .png.
+                  Puedes subir hasta 20 archivos formato imagen .jpg o .png.
                 </FormDescription>
                 <FormControl>
                   <Input type="file" multiple accept="image/png, image/jpeg" />
