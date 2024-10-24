@@ -59,7 +59,9 @@ module.exports = {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			},
-			color_form_button:"#318F51"
+			color_form_button:"#318F51",
+			color_form_background:"#5FA77738",
+			color_text_second:"#71717A",
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

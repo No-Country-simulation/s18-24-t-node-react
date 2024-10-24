@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Title } from "@/app/components/title-menu";
 
 const formSchema = z.object({
   username: z
@@ -42,17 +43,12 @@ export default function Profile() {
     console.log(values);
   }
   return (
-    <div className="mx-5">
-      <div className="w-full m-5 ">
-        <h2 className="text-2xl font-medium">Mi Perfil</h2>
-        <p className="text-[#71717A] text-xl">
-          Completa o edita tu informacion personal
-        </p>
-      </div>
+    <div>
+      <Title title="Mi Perfil" description="Completa o edita tu informacion personal"/>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 bg-[#5FA77738] rounded-md p-5"
+          className="space-y-8 bg-color_form_background rounded-md p-5"
         >
           <FormField
             control={form.control.username}

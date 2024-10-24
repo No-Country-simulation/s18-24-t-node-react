@@ -13,7 +13,7 @@ import {
   const items = [
     {
       title: "Mi perfil",
-      url: "#"
+      url: "/main-menu/profile"
     },
     {
       title: "Mis Reservas",
@@ -29,7 +29,7 @@ import {
     },
     {
       title: "Mis propiedades",
-      url: "#"
+      url: "/main-menu/property"
     },
     {
       title: "Configuracion",
