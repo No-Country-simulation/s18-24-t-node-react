@@ -56,6 +56,7 @@ export class PropertyParamsDto {
     description: 'The location must be detailed',
     type: [String],
   })
+  @IsOptional()
   @IsString()
   location: string;
 }
