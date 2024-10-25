@@ -2,8 +2,10 @@
 import { useState, useEffect } from "react";
 import { userRegister } from "@/app/api/callApi";
 import { AlertPopup } from "@/app/components/Alert";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
   const [passMatch, setPassMatch] = useState(true);
@@ -66,25 +68,20 @@ export default function RegisterForm() {
         newFormData[key] = value;
       }
       //paso a mi api los datos
-      const response = await userRegister(newFormData);
-
-      if (response.ok) {
-        setAlert({ show: true, message: "Registro exitoso", type: "success" });
-      } else {
-        let error = response.json();
-        error.then((result) => {
-          const message = result.message;
-          if (Array.isArray(message)) {
-            let lista = [];
-            message.forEach((element, index) => {
-              lista.push(<p key={index}>{element}</p>);
-            });
-            setAlert({ show: true, message: lista, type: "error" });
-          } else {
-            setAlert({ show: true, message: message, type: "error" });
-          }
-        });
-      }
+      const response = userRegister(newFormData);
+      response.then(result => {
+        //console.log('Resultado:', result);
+        if(result.message === "Registro exitoso"){
+          setAlert(result);
+          setTimeout(() => router.push("/auth/login"), 10000);
+        }
+        setAlert(result)
+      })
+      .catch(error => {
+        //console.error('Error:', error);
+        setAlert(error)
+      });
+      
     } else {
       isOverAge(birthDate)
         ? setAlert({
