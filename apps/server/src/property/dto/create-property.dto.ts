@@ -63,4 +63,7 @@ export class CreatePropertyDto {
   @IsArray()
   @IsString({ each: true })
   readonly tags?: string[];
+
+  @IsString()
+  location: string;
 }

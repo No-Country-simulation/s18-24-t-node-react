@@ -29,7 +29,7 @@ export class PropertyService {
   }
 
   async findAll(params: PropertyParamsDto) {
-    const { title, price, tags, orderBy } = params;
+    const { title, minPrice, maxPrice, tags, orderBy, location } = params;
 
     // Inicializar el filtro vacío
     const filters: any = {};
@@ -39,8 +39,15 @@ export class PropertyService {
       filters.title = { $regex: title, $options: 'i' }; // Búsqueda insensible a mayúsculas/minúsculas
     }
 
-    if (price) {
-      filters.price = { $gte: price }; // Usar operador $gte para mayor o igual
+    // Filtro por rango de precios
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      filters.price = {};
+      if (minPrice !== undefined) {
+        filters.price.$gte = minPrice;
+      }
+      if (maxPrice !== undefined) {
+        filters.price.$lte = maxPrice;
+      }
     }
 
     if (tags && tags.length > 0) {
@@ -54,6 +61,11 @@ export class PropertyService {
     if (orderBy) {
       const sortOrder = orderBy === 'ASC' ? 1 : -1; // Conversión manual
       query = query.sort({ createdAt: sortOrder });
+    }
+
+    // Filtro por zona si está presente (búsqueda flexible con regex)
+    if (location) {
+      filters.address = { $regex: location, $options: 'i' }; // Buscar en el campo 'address' por coincidencias parciales
     }
 
     return await query.exec(); // Ejecutar la consulta con exec()

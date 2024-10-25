@@ -1,10 +1,4 @@
-import {
-  IsString,
-  IsNumber,
-  IsArray,
-  IsOptional,
-  IsIn,
-} from 'class-validator';
+import { IsString, IsNumber, IsArray, IsOptional, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -19,14 +13,24 @@ export class PropertyParamsDto {
   @IsString()
   title: string;
 
-  @ApiPropertyOptional({
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  minPrice: number;
+
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  maxPrice: number;
+
+  /* @ApiPropertyOptional({
     example: 100,
     description: 'Max price of property to search',
   })
   @Type(() => Number)
   @IsOptional()
   @IsNumber()
-  price: number;
+  price: number; */
 
   @ApiPropertyOptional({
     example: ['wifi', 'pool'],
@@ -45,4 +49,13 @@ export class PropertyParamsDto {
   @IsIn(['ASC', 'DES'])
   @IsOptional()
   orderBy: Orders;
+
+  @ApiPropertyOptional({
+    example:
+      '5886, Soler, Palermo Hollywood, Buenos Aires, Buenos Aires, Distrito Audiovisual, C1414CWA, Argentina',
+    description: 'The location must be detailed',
+    type: [String],
+  })
+  @IsString()
+  location: string;
 }
