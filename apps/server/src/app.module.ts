@@ -7,6 +7,8 @@ import { AppService } from './app.service';
 import { PropertyModule } from './property/property.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { ReviewModule } from './review/review.module';
+import { AuthModule } from './auth/auth.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ReviewModule } from './review/review.module';
     PropertyModule,
     ReservationsModule,
     ReviewModule,
+    AuthModule,
+    PaymentsModule
   ],
   controllers: [AppController],
   providers: [AppService],
