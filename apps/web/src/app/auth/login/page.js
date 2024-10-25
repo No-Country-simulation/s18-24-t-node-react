@@ -2,6 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -45,6 +46,7 @@ const Login = () => {
           <h4 className="text-xl text-left text-gray-500">
             Entrar a mi cuenta
           </h4>
+          <Link href={"/auth/register"}><u>Registrarme</u></Link>
           <div className="flex flex-col items-center justify-center">
             <div className="mb-4 w-80 ">
               <label
