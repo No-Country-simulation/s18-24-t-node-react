@@ -14,8 +14,6 @@ Este proyecto es una plataforma de comercio electrónico que facilita la compra 
 
 <a href="https://www.linkedin.com/in/blancoemanuel07/" target="_blank">Emanuel Blanco</a> - Desarrollador Front-End
 
-<a href="https://www.linkedin.com/in/emaenriquez" target="_blank">Emanuel Enriquez</a> - Desarrollador Front-End
-
 <a href="https://www.linkedin.com/in/enlace3/" target="_blank">José Imhoff</a> - Desarrollador Front-End
 
 <a href="https://www.linkedin.com/in/enlace3/" target="_blank">Ignacio Villca Cayampi</a> - Desarrollador Front-End
