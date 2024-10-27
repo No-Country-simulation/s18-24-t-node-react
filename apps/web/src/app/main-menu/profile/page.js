@@ -20,13 +20,12 @@ const formSchema = z.object({
   username: z
     .string()
     .min(5, {
-      message: "Username must be at least 5 characters.",
+      message: "el nombre y apellido debe tener mas de 10 characters.",
     })
     .max(50),
   birthDate: z.string(),
   email: z.string(),
   nationality: z.string(),
-  avatar: z.string(),
 });
 
 export default function Profile() {
@@ -35,20 +34,33 @@ export default function Profile() {
     defaultValues: {
       username: "",
       birthDate: new Date(),
+      email: "",
+      nationality: "",
     },
   });
 
   function onSubmit(values, event) {
     event.preventDefault();
     console.log(values);
+    const validationResult = formSchema.safeParse(values);
+    if (!validationResult.success) {
+      console.log(values);
+      console.error(validationResult.error);
+    } else {
+      console.log(values);
+      console.log("Form submitted successfully!", validationResult.data);
+    }
   }
   return (
     <div>
-      <Title title="Mi Perfil" description="Completa o edita tu informacion personal"/>
+      <Title
+        title="Mi Perfil"
+        description="Completa o edita tu informacion personal"
+      />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 bg-color_form_background rounded-md p-5"
+          className="space-y-1 bg-color_form_background rounded-md p-5"
         >
           <FormField
             control={form.control.username}
@@ -57,7 +69,11 @@ export default function Profile() {
               <FormItem>
                 <FormLabel>Nombre Completo</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" placeholder="nombre" {...field} />
+                  <Input
+                    className="bg-white"
+                    placeholder="Nombres y Apellido"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   Ingresa tu nombre tal como figura en el documento de identidad
@@ -71,7 +87,7 @@ export default function Profile() {
             control={form.control.birthDate}
             name="birthDate"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-2">
                 <FormLabel>Fecha de nacimiento</FormLabel>
                 <FormControl>
                   <Input className="bg-white" type="date" {...field} />
@@ -90,7 +106,12 @@ export default function Profile() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" type="email" {...field} />
+                  <Input
+                    className="bg-white"
+                    type="email"
+                    placeholder="Ingresa tu email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   Este es tu email predeterminado, nos contactaremos contigo por
@@ -107,7 +128,11 @@ export default function Profile() {
               <FormItem>
                 <FormLabel>Nacionalidad</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" placeholder="" {...field} />
+                  <Input
+                    className="bg-white"
+                    placeholder="Ingrese su nacionalidad"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   La que figura en tu documento de identidad.
@@ -135,9 +160,11 @@ export default function Profile() {
               </FormItem>
             )}
           />
-          <Button className="bg-[#318F51] text-white" type="submit">
-            Actualizar
-          </Button>
+          <div className="flex justify-end w-[85%]">
+            <Button className="bg-[#318F51] text-white" type="submit">
+              Actualizar
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

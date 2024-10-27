@@ -3,12 +3,15 @@ import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { saveToken, getToken } from "@/app/api/token";
+import { AlertPopup } from "@/app/components/Alert";
 
 const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [alert,setAlert] = useState({ show: false, message: "", type: "" });
  
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,19 +26,24 @@ const Login = () => {
       console.log(response);
 
       if (response.ok) {
-
-        alert("Login successful");
-        router.push("/");
+        const data = await response.json();
+        saveToken(data.token)
+        setAlert({show: true,message:"Login successful",type: "success"});
+        setTimeout(() => router.push("/"), 11000);
+        //router.push("/");
       } else {
-        alert("Login failed");
+        setAlert({show: true,message:"Login failed", type: "error"});
       }
     } catch (error) {
+      setAlert({ show: true, message: error, type: "error" });
       console.error(error);
     }
+    setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
   };
   return (
     <>
       <div className="min-h-screen flex items-center justify-center mt-7">
+      {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
         <form
           className="bg-white bg-opacity-65 p-8 rounded-3xl shadow-md w-1/2  max-w-md"
           onSubmit={handleSubmit}

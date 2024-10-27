@@ -178,7 +178,7 @@ export default function RegisterForm() {
           name="mobileNumber"
           type="tel"
           pattern="^\+?[0-9]+$"
-          minLength={14}
+          minLength={12}
           maxLength={14}
           placeholder="Ej: +549 111 1111111"
           title="Solo se permiten números del 0 al 9 y el signo +"

@@ -22,17 +22,52 @@ import {
 import { Input } from "@/components/ui/input";
 import { Title } from "@/app/components/title-menu";
 
-const formSchema = z.object({});
+const fileSchema = z
+  .instanceof(File)
+  .refine((file) => ["image/jpeg", "image/png"].includes(file.type), {
+    message: "El archivo debe ser un JPEG o PNG",
+  });
+
+const formSchema = z.object({
+  bancUser: z.string().min(30, { message: "indica 30 numeros" }),
+  dni: z.array(fileSchema).optional(),
+  photoprofile: fileSchema.optional(),
+  service: fileSchema.optional(),
+  property: z.string().min(4, {
+    message: "Selecciona una opcion",
+  }),
+  pais: z.string().optional(),
+  provincia: z.string().optional(),
+  ciudad: z.string().optional(),
+  calle: z.string().optional(),
+  photoproperty: z.array(fileSchema).optional(),
+});
 
 export function GuestHost() {
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      bancUser: "",
+      property: "",
+      pais: "",
+      provincia: "",
+      ciudad: "",
+      calle: "",
+    },
   });
 
   function onSubmit(values, event) {
     event.preventDefault();
     console.log(values);
+    //valido los datos ingresado con safeParse y me dice si se cargo correctamente
+    const validationResult = formSchema.safeParse(values);
+    if (!validationResult.success) {
+      console.log(values);
+      console.error(validationResult.error);
+    } else {
+      console.log(values);
+      console.log("Form submitted successfully!", validationResult.data);
+    }
   }
   return (
     <div>
@@ -43,18 +78,21 @@ export function GuestHost() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 bg-color_form_background rounded-md p-5"
+          className="space-y-1 bg-color_form_background rounded-md p-5"
         >
           <FormField
-            control={form.control.username}
-            name="username"
+            control={form.control.bancUser}
+            name="bancUser"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Número de cuenta bancaria</FormLabel>
                 <FormControl>
                   <Input
+                    type="text"
                     className="bg-white"
                     placeholder="Ingresa aquí los números de una cuenta para poder realizar cobros."
+                    pattern="\d*"
+                    title="Por favor, ingresa solo números enteros completa con 0 si es necesario."
                     {...field}
                   />
                 </FormControl>
@@ -66,8 +104,8 @@ export function GuestHost() {
             )}
           />
           <FormField
-            control={form.control.avatar}
-            name="avatar"
+            control={form.control.dni}
+            name="dni"
             render={() => (
               <FormItem>
                 <FormLabel>
@@ -83,8 +121,8 @@ export function GuestHost() {
             )}
           />
           <FormField
-            control={form.control.avatar}
-            name="avatar"
+            control={form.control.photoprofile}
+            name="photoprofile"
             render={() => (
               <FormItem>
                 <FormLabel>Selfie / foto actualizada</FormLabel>
@@ -99,8 +137,8 @@ export function GuestHost() {
             )}
           />
           <FormField
-            control={form.control.avatar}
-            name="avatar"
+            control={form.control.service}
+            name="service"
             render={() => (
               <FormItem>
                 <FormLabel>
@@ -118,8 +156,8 @@ export function GuestHost() {
             )}
           />
           <FormField
-            control={form.control.avatar}
-            name="avatar"
+            control={form.control.property}
+            name="property"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Tipo de inmueble</FormLabel>
@@ -138,6 +176,7 @@ export function GuestHost() {
                     <SelectItem value="habitacion">habitacion</SelectItem>
                   </SelectContent>
                 </Select>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -154,7 +193,7 @@ export function GuestHost() {
             )}
           />
           <FormField
-            control={form.control.pais}
+            control={form.control.provincia}
             name="provincia"
             render={({ field }) => (
               <FormItem>
@@ -195,8 +234,8 @@ export function GuestHost() {
             )}
           />
           <FormField
-            control={form.control.avatar}
-            name="avatar"
+            control={form.control.photoproperty}
+            name="photoproperty"
             render={() => (
               <FormItem>
                 <FormLabel>Agregar fotos de la propiedad</FormLabel>
@@ -209,9 +248,11 @@ export function GuestHost() {
               </FormItem>
             )}
           />
-          <Button className="bg-color_form_button text-white" type="submit">
-            Cargar propiedad
-          </Button>
+          <div className="flex justify-end w-[85%]">
+            <Button className="bg-color_form_button text-white" type="submit">
+              Cargar propiedad
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
