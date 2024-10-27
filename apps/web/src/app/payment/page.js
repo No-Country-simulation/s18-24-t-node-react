@@ -35,41 +35,50 @@ export default function PaymentForm() {
     setQuantity(e.target.value);
   }
 
+  function sanitizePaymentData(newPayment) {
+    return {
+      name: newPayment.name.trim(),
+      description: newPayment.description.trim(),
+      currency: newPayment.currency.toUpperCase(),
+      unit_amount: Number(newPayment.unitAmount),
+      quantity: Number(newPayment.quantity),
+      success_url: "http://localhost:3000/success",
+      cancel_url: "http://localhost:3000/cancel",
+    };
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
     let formData = new FormData(event.target);
-    let newFormData = {
-      name: "",
-      description: "",
-      currency: "",
-      unit_Amount: 0,
-      quantity: 1,
-      success_url: "http://localhost:3000/success",
-      /*cancel_url:"http://localhost:3000/cancel",*/
-    };
-    for (const [key, value] of formData.entries()) {
-      newFormData[key] =
-        key === "unit_Amount" || key === "quantity" ? Number(value) : value;
+    let newPayment = {};
+    formData.forEach((value, key) => {
+      newPayment[key] = value;
+    });
+
+    const sanitizedPayment = sanitizePaymentData(newPayment);
+    console.log(sanitizedPayment);
+    if (
+      isNaN(sanitizedPayment.unit_amount) ||
+      isNaN(sanitizedPayment.quantity)
+    ) {
+      setAlert({
+        show: true,
+        message: "Los campos UnitAmount y Quantity deben ser números",
+        type: "error",
+      });
+      return;
     }
-    console.log(newFormData);
-    const response = await paymentStripe(newFormData);
-    if (response === null) {
+
+    const responseUrl = await paymentStripe(sanitizedPayment);
+
+    if (responseUrl) {
+      window.location.href = responseUrl;
+    } else {
       setAlert({
         show: true,
         message: "Error al registrar el pago",
         type: "error",
       });
-    }
-
-    if (response.ok) {
-      setAlert({
-        show: true,
-        message: "Registro exitoso",
-        type: "success",
-      });
-      window.location.href = response.url;
-    } else {
-      throw new Error("Error al registrar el pago", response.status);
     }
     setTimeout(
       () =>
@@ -93,7 +102,7 @@ export default function PaymentForm() {
         </p>
       </div>
       <div
-        className="w-1/3 min-w-[700px] h-[80%] rounded-lg border-[#318F51] my-4 shadow-md bg-[#5FA77738]"
+        className="w-1/3 min-w-[900px] h-[80%] rounded-lg border-[#318F51] my-4 shadow-md bg-[#5FA77738]"
         id="formPayment"
       >
         {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
@@ -138,15 +147,15 @@ export default function PaymentForm() {
           <label className="block py-1 w-[100%] font-medium">UnitAmount*</label>
           <input
             className="block p-1 w-[100%] rounded"
-            name="unit_Amount"
+            name="unitAmount"
             type="number"
-            minLength={14}
-            maxLength={14}
-            placeholder="Ej:1110"
-            title="Unit_Amount"
+            placeholder="Ej: 1110"
+            title="Unit Amount"
+            min={0}
+            step="1"
             required
             onChange={handleChangeUnitAmount}
-          ></input>
+          />
           <label className="block py-1 w-[100%] font-medium">Quantity*</label>
           <input
             className="block p-1 w-[100%] rounded"

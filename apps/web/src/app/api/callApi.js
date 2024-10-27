@@ -12,22 +12,22 @@ export async function userRegister(newUser) {
 }
 
 export async function paymentStripe(newPayment) {
-  // Convertimos unitAmount y quantity a números antes de enviarlos
   const sanitizedPayment = {
     ...newPayment,
     unitAmount: Number(newPayment.unitAmount),
     quantity: Number(newPayment.quantity),
   };
-
   try {
-    const response = await fetch(`${API}/payments/createPaymentSession`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(sanitizedPayment),
-    });
-
+    const response = await fetch(
+      `http://localhost:3001/payments/createPaymentSession`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sanitizedPayment),
+      }
+    );
     if (!response.ok) {
       console.error("Error al registrar el pago", response.status);
       return null;
