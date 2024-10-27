@@ -41,20 +41,25 @@ export async function newProperty(property) {
       price: Number(property.price),
       max_people: Number(property.max_people),
       tags: property.tags,
-      photos: [
-        "https://example.com/photo1.jpg",
-        "https://example.com/photo2.jpg",
-        "https://example.com/photo3.jpg",
-      ],
+      files: property.photos
     };
+    const formData = new FormData();
+    for (const key in propertyfilter) {
+      if (Array.isArray(propertyfilter[key])) {
+       propertyfilter[key].forEach((file, index) => {
+          formData.append(`${key}[${index}]`, file);
+        });
+      } else {
+        formData.append(key, propertyfilter[key]);
+      }
+    }
     console.log("datos enviados", propertyfilter);
     const response = await fetch(`${API}/property/register`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(propertyfilter),
+      body: formData,
     });
     if (!response.ok) {
       const errorDetails = await response.json(); // Captura más detalles del error

@@ -111,12 +111,6 @@ export default function RegisterProperty() {
     form.setValue("photos", filesInput);
   };
 
-  /*const handleNumberChange = (name, event) => {
-    event.preventDefault();
-    let number = event.target.value;
-    form.setValue(name, number);
-  };*/
-
   function onSubmit(values, event) {
     event.preventDefault();
     //valido los datos ingresado con safeParse y me dice si se cargo correctamente

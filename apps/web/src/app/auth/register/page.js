@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { userRegister } from "@/app/api/callApi";
 import { AlertPopup } from "@/app/components/Alert";
 import { useRouter } from "next/navigation";
@@ -13,10 +13,6 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
-  useEffect(() => {
-    verifyPassword();
-  }, [pass1, pass2]);
-
   function handleChangePass1(e) {
     e.preventDefault();
     setPass1(e.target.value);
@@ -25,9 +21,13 @@ export default function RegisterForm() {
     e.preventDefault();
     setPass2(e.target.value);
   }
-  function verifyPassword() {
+  const verifyPassword = useCallback(() => {
     pass1 === pass2 ? setPassMatch(true) : setPassMatch(false);
-  }
+  }, [pass1, pass2]);
+
+  useEffect(() => {
+    verifyPassword();
+  }, [verifyPassword]);
 
   function handleChangeDate(e) {
     e.preventDefault();
