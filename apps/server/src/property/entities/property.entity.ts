@@ -37,6 +37,9 @@ export class Property extends Document {
   @Prop()
   tags: string[];
 
+
+  /*@Prop({ type: Types.ObjectId, required:true, ref: 'User'})
+    user_id: Types.ObjectId; */
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);

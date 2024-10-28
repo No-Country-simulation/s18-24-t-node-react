@@ -51,24 +51,12 @@ export class PropertyController {
   @ApiResponse({ status: 200, description: 'Register property success' })
   @ApiResponse({ status: 404, description: 'Property not created' })
   @Post('register')
-  @UseInterceptors(FilesInterceptor('images'))
-  @UseGuards(AuthGuard('jwt'))
   async create(
-    @UploadedFiles() files: Express.Multer.File[],
     @Body() createPropertyDto: CreatePropertyDto,
   ): Promise<Property> {
-    const imageUrls = await this.imageService.uploadImages(files);
-
-    const propertyData = {
-      ...createPropertyDto,
-      photos: imageUrls,
-    };
-
-    console.log(propertyData);
-
-    return this.propertyService.create(propertyData);
+    return this.propertyService.create(createPropertyDto);
   }
-  @ApiOperation({ summary: 'Get property by id' })
+
   @ApiResponse({ status: 200, description: 'Returns a property success' })
   @ApiResponse({ status: 404, description: 'Property not found' })
   @Get('get/:id')
