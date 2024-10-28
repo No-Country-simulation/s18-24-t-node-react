@@ -2,8 +2,6 @@ import Datepicker from 'react-tailwindcss-datepicker'
 import { Dropdown } from '../components/Dropdown'
 import { SearchIcon} from './icons/SearchIcon'
 
-import { useRouter } from 'next/navigation'
-
 import { useInputSearch } from '../hooks/useInputSearch'
 
 export const InputSearch = () => {
@@ -30,10 +28,12 @@ export const InputSearch = () => {
       {/* Dropdown */}
       <Dropdown
         setDestination={handleClickSetDestination}
-        toggleIsOpen={() => setIsDestinationsOpen(!isDestinationsOpen)}
+        toggleIsOpen={() => setIsDestinationsOpen(true)}
         destination={searchValues?.destination}
         isOpen={isDestinationsOpen}
       />
+
+      <div className='bg-slate-400 h-10 w-[2px] rounded-full' />
 
       {/* Datepicker */}
       <div
@@ -50,7 +50,7 @@ export const InputSearch = () => {
           placeholder="Agregar fechas"
           inputClassName='text-slate-500 bg-transparent placeholder:text-slate-500 outline-none hover:cursor-pointer'
           value={{ startDate: searchValues?.startDate, endDate: searchValues?.endDate, }}
-          onChange={handleClickSetDate}
+          onChange={date => handleClickSetDate({ ...date })}
         />
       </div>
 

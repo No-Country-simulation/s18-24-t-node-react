@@ -7,6 +7,7 @@ import { InputSearch } from "../../ui/InputSearch"
 import { Spinner } from "../../ui/Spinner"
 
 import { useRouter } from 'next/navigation';
+import { useBoundStore } from "../../store/bound.store";
 
 const INITIAL_FILTERS_VALUES = {
   minPrice: 0,
@@ -39,6 +40,10 @@ const Page = () => {
     const minPrice = searchParams.get('minPrice')
     const peopleQuantity = searchParams.get('peopleQuantity')
     const title = searchParams.get('title')
+
+    const destination = searchParams.get('destination')
+    const startDate = searchParams.get('startDate')
+    const endDate = searchParams.get('endDate')
 
     setFilters(prev => ({ ...prev, minPrice, peopleQuantity, title }))
   }

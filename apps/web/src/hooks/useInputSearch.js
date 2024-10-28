@@ -1,36 +1,34 @@
 'use client'
 
 import { useState } from "react"
-import { getFormatedDate } from '../utils/getFormatedDate'
 import { useRouter } from "next/navigation"
 
-export const useInputSearch = () => {
+import { getFormatedDate } from '../utils/getFormatedDate'
+import { useBoundStore } from '../store/bound.store'
 
-  const [searchValues, setSearchValues] = useState({})
-  const [isDestinationsOpen, setIsDestinationsOpen] = useState(false)
+export const useInputSearch = () => {
+  const filters = useBoundStore(state => state.filters)
+  const setDestinationState = useBoundStore(state => state.setDestinationState)
+  const setFilters = useBoundStore(state => state.setFilters)
+  const isDestinationOpen = useBoundStore(state => state.isDestinationOpen)
 
   const router = useRouter()
 
   const handleClickSetDestination = (destination) => {
 
-    const startDate = new Date(destination.startDate)
-    const endDate = new Date(destination.endDate)
+    const startDate = new Date(filters.startDate)
+    const endDate = new Date(filters.endDate)
 
     if (!startDate || !endDate) return
 
-    setSearchValues({ ...searchValues, destination })
-    setIsDestinationsOpen(false)
+    setFilters({ destination })
+    setDestinationState(false)
   }
-
-  const handleClickSetDate = (dates) => {
-    setSearchValues({ ...searchValues, ...dates })
-  }
-
 
   const redirectToPage = () => {
 
-    const startDate = getFormatedDate(searchValues?.startDate)
-    const endDate = getFormatedDate(searchValues?.endDate)
+    const startDate = getFormatedDate(filters?.startDate)
+    const endDate = getFormatedDate(filters?.endDate)
 
     if (!startDate || !endDate) return
 
@@ -40,7 +38,7 @@ export const useInputSearch = () => {
     if (end <= start) return
 
     const queryParams = {
-      destination: searchValues?.destination,
+      destination: filters?.destination,
       startDate,
       endDate,
     }
@@ -49,12 +47,19 @@ export const useInputSearch = () => {
     router.push(`/property?${queryString}`);
   };
 
+  const handleClickSetDate = (dates) => {
+    const startDate = getFormatedDate(dates?.startDate)
+    const endDate = getFormatedDate(dates?.endDate)
+
+    setFilters({ startDate, endDate })
+  }
+
   return {
     redirectToPage,
     handleClickSetDate,
     handleClickSetDestination,
-    searchValues,
-    isDestinationsOpen,
-    setIsDestinationsOpen
+    searchValues: filters,
+    isDestinationsOpen: isDestinationOpen,
+    setIsDestinationsOpen: setDestinationState
   }
 }
