@@ -2,21 +2,20 @@ import Datepicker from 'react-tailwindcss-datepicker'
 import { Dropdown } from '../components/Dropdown'
 import { SearchIcon} from './icons/SearchIcon'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { getFormatedDate } from '../utils/getFormatedDate'
+import { useInputSearch } from '../hooks/useInputSearch'
 
 export const InputSearch = () => {
-  const [searchValues, setSearchValues] = useState({})
-  const [isDestinationsOpen, setIsDestinationsOpen] = useState(false)
-  
-  const router = useRouter()
 
-  const handleClickSetDestination = (destination) => {
-    setSearchValues({ ...searchValues, destination })
-    setIsDestinationsOpen(false)
-  }
+  const {
+    redirectToPage,
+    handleClickSetDate,
+    handleClickSetDestination,
+    searchValues,
+    isDestinationsOpen,
+    setIsDestinationsOpen
+  } = useInputSearch()
 
   const closeDatePicker = () => {
     const input = document.getElementById('datepicker');
@@ -24,21 +23,6 @@ export const InputSearch = () => {
       input.focus()
     }
   }
-
-  const redirectToPage = () => {
-
-    const startDate = getFormatedDate(searchValues?.startDate)
-    const endDate = getFormatedDate(searchValues?.endDate)
-
-    const queryParams = {
-      destination: searchValues?.destination,
-      startDate,
-      endDate,
-    }
-
-    const queryString = new URLSearchParams(queryParams).toString()
-    router.push(`/property?${queryString}`);
-  };
 
   return (
     <div className="flex justify-between items-center gap-2 bg-slate-50 w-[600px] h-[90px] rounded-full px-8 shadow-2xl border border-slate-900 text-center">
@@ -66,7 +50,7 @@ export const InputSearch = () => {
           placeholder="Agregar fechas"
           inputClassName='text-slate-500 bg-transparent placeholder:text-slate-500 outline-none hover:cursor-pointer'
           value={{ startDate: searchValues?.startDate, endDate: searchValues?.endDate, }}
-          onChange={newValue => setSearchValues({ ...searchValues, ...newValue })}
+          onChange={handleClickSetDate}
         />
       </div>
 

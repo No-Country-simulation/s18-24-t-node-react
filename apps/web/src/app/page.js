@@ -58,14 +58,14 @@ const Page = () => {
         </div>
       </section>
 
-      <section className='px-8 max-w-[1400px] m-auto'>
+      <section className='px-8 max-w-[1400px] mx-auto'>
         <h2 className="font-roboto text-3xl text-slate-700 font-bold py-14">Encontra los mejores alojamientos en los destinos mas buscados</h2>
 
-        <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
+        <div className='grid grid-cols-2 lg:grid-cols-3  xl:grid-cols-4 gap-4'>
           {
             TOP_SEARCH?.map((place, index) => (
 
-              <div key={index} className="border-2 border-[#5FA77780] rounded-2xl overflow-hidden shadow-lg transition-transform transform hover:scale-105 hover:cursor-pointer w-80 relative">
+              <div key={index} className="border-x border-b border-slate-700 rounded-2xl overflow-hidden shadow-lg transition-transform transform hover:scale-105 hover:cursor-pointer w-80 relative">
 
                 <Image
                   src={place?.href}
