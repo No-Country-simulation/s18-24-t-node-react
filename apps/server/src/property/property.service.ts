@@ -13,8 +13,16 @@ export class PropertyService {
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    const { title, description, price, max_people, tags, photos } =
-      createPropertyDto;
+    const {
+      title,
+      description,
+      price,
+      max_people,
+      tags,
+      photos,
+      address,
+      coordinates,
+    } = createPropertyDto;
 
     const newProperty = new this.propertyModel({
       title,
@@ -23,6 +31,11 @@ export class PropertyService {
       photos,
       max_people,
       tags,
+      address,
+      coordinates: {
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+      },
     });
 
     return newProperty.save();
@@ -56,6 +69,9 @@ export class PropertyService {
 
     // Construir la consulta
     let query = this.propertyModel.find(filters);
+
+    // Ordenar por precio de menor a mayor
+    query = query.sort({ price: 1 }); // Usar 1 para ascendente, -1 para descendente
 
     // Si se incluye `orderBy`, aplicamos ordenamiento
     if (orderBy) {

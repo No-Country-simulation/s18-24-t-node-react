@@ -27,7 +27,7 @@ export class PropertyController {
   constructor(
     private readonly imageService: ImageService,
     private readonly propertyService: PropertyService,
-  ) { }
+  ) {}
 
   @ApiOperation({ summary: 'Find all properties' })
   @ApiResponse({ status: 200, description: 'Returns all properties success' })
@@ -64,6 +64,8 @@ export class PropertyController {
       photos: imageUrls,
     };
 
+    console.log(propertyData);
+
     return this.propertyService.create(propertyData);
   }
   @ApiOperation({ summary: 'Get property by id' })
@@ -75,7 +77,6 @@ export class PropertyController {
   }
   @ApiOperation({ summary: 'Delete property by id' })
   @ApiResponse({ status: 200, description: 'Deleted property success' })
-  @ApiResponse({ status: 404, description: 'Property not deleted' })
   @Delete('delete/:id')
   @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id') id: number) {
