@@ -8,15 +8,8 @@ export const useProperties = () => {
 
 
   const getProperties = async (inputQueryParams) => {
-
-
-    // title: string;
+    // Current available params
     // minPrice
-    // maxPrice
-    // tags: string[];
-
-    // @IsIn(['ASC', 'DES'])
-    // orderBy: Orders;
 
     const params = {}
 
