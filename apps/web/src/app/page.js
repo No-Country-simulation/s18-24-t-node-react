@@ -20,7 +20,7 @@ const Page = () => {
     <section>
       <Banner />
 
-      <div className='px-8 max-w-[1400px] m-auto'>
+      <div className='px-8 max-w-[1400px] m-auto pb-32'>
         <h2 className="font-roboto text-3xl text-slate-700 font-bold py-14">Destinos populares</h2>
         
         { (properties.length > 0 && !isLoading) && <GridProperties properties={properties}/>}

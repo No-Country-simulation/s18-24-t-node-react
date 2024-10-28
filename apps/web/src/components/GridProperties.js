@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { CardProperty } from "./CardProperty"
 
 export const GridProperties = ({ properties }) => {

@@ -5,6 +5,8 @@ import { SearchIcon} from './icons/SearchIcon'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+import { getFormatedDate } from '../utils/getFormatedDate'
+
 export const InputSearch = () => {
   const [searchValues, setSearchValues] = useState({})
   const [isDestinationsOpen, setIsDestinationsOpen] = useState(false)
@@ -24,24 +26,19 @@ export const InputSearch = () => {
   }
 
   const redirectToPage = () => {
-    const startDate = new Date(searchValues?.startDate)
 
-    console.log(startDate)
-    
-    const endDate = Date(searchValues?.endDate)
+    const startDate = getFormatedDate(searchValues?.startDate)
+    const endDate = getFormatedDate(searchValues?.endDate)
 
-    // const queryParams = {
-    //   destination: searchValues?.destination,
-    //   startDate,
-    //   endDate,
-    // }
+    const queryParams = {
+      destination: searchValues?.destination,
+      startDate,
+      endDate,
+    }
 
-    // const queryString = new URLSearchParams(queryParams).toString()
-    // router.push(`/new-url?${queryString}`);
+    const queryString = new URLSearchParams(queryParams).toString()
+    router.push(`/property?${queryString}`);
   };
-
-  // http://localhost:3000/property?origin=''&startDate=''&endDate=''&
-
 
   return (
     <div className="flex justify-between items-center gap-2 bg-slate-50 w-[600px] h-[90px] rounded-full px-8 shadow-2xl border border-slate-900 text-center">

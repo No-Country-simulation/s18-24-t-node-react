@@ -7,14 +7,37 @@ export const useProperties = () => {
   const [isLoading, setIsLoading,] = useState(true)
 
 
-  const getProperties = async () => {
+  const getProperties = async (inputQueryParams) => {
+
+
+    // title: string;
+    // minPrice
+    // maxPrice
+    // tags: string[];
+
+    // @IsIn(['ASC', 'DES'])
+    // orderBy: Orders;
+
+    const params = {}
+
     setIsLoading(true)
 
-    try {
-      const data = await fetch('https://booked-nu.vercel.app/property')
-      if (!data.ok) throw new Error('Error')
+    if (inputQueryParams) {
+      Object.keys(inputQueryParams).forEach(key => {
+        if (inputQueryParams[key] !== undefined) {
+          params[key] = inputQueryParams[key].toString()
+        }
+      });
+    }
 
-      const propertiesData = await data.json()
+    const queryParams = new URLSearchParams(params);
+
+    try {
+      const response = await fetch(`https://booked-nu.vercel.app/property?${queryParams}`)
+
+      if (!response.ok || response.status !== 200) throw new Error(`Error ${response.status}: ${response.statusText}`)
+
+      const propertiesData = await response.json()
 
       setProperties(propertiesData)
     } catch (error) {
