@@ -62,6 +62,18 @@ const Page = () => {
     await getPropertiesWithCurrentParams()
   }
 
+  const handleClickRemoveFilters = async () => {
+
+    Object.entries(filters).map(([key]) => {
+      searchParams.delete(key)
+    })
+
+    setFilters(INITIAL_FILTERS_VALUES)
+
+    router.push(`?${searchParams.toString()}`);
+    await getPropertiesWithCurrentParams()
+  }
+
   const addQueryAndReload = (queryParams) => {
     for (const param in queryParams) {
       searchParams.set(param, queryParams[param]);
@@ -88,7 +100,7 @@ const Page = () => {
             type="text"
             name="title"
             value={title ?? ''}
-            onChange={data => setFilters(prev => ({ ...prev, title: data.target.value }))}
+            onChange={data => setFilters(prev => ({ ...prev, title: data?.target?.value }))}
           />
         </div>
 
@@ -105,7 +117,7 @@ const Page = () => {
             min={1}
             max={20}
             value={peopleQuantity ?? 0}
-            onChange={data => setFilters(prev => ({ ...prev, peopleQuantity: data.target.value }))}
+            onChange={data => setFilters(prev => ({ ...prev, peopleQuantity: data?.target?.value }))}
           />
         </div>
 
@@ -122,7 +134,7 @@ const Page = () => {
             min={0}
             max={2000000}
             value={minPrice ?? 0}
-            onChange={data => setFilters(prev => ({ ...prev, minPrice: data.target.value }))}
+            onChange={data => setFilters(prev => ({ ...prev, minPrice: data?.target?.value }))}
           />
         </div>
 
@@ -131,6 +143,14 @@ const Page = () => {
           className="bg-[#5FA77C82] py-1 rounded-2xl w-fit px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
         >
           Filtrar
+        </button>
+
+        {/* Remove filters */}
+        <button
+          onClick={handleClickRemoveFilters}
+          className="bg-[#5FA77C82] py-1 rounded-2xl w-fit px-2 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
+        >
+          Limpiar filtros
         </button>
       </div>
 
