@@ -11,7 +11,7 @@ export const useProperties = () => {
     setIsLoading(true)
 
     try {
-      const data = await fetch('http://localhost:3001/property')
+      const data = await fetch('https://booked-nu.vercel.app/property')
       if (!data.ok) throw new Error('Error')
 
       const propertiesData = await data.json()
