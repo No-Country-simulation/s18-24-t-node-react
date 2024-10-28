@@ -91,7 +91,7 @@ export default function PaymentForm() {
     );
   }
   return (
-    <div className="flex flex-col items-center bg-white h-[750px] text-black">
+    <div className="flex flex-col items-center bg-white min-h-screen text-black">
       <HeaderBooked />
       <div className="justify-start	justify-content: flex-start">
         <h2 className="font-semibold text-4xl my-2 ml-2">Registrar mi pago</h2>
@@ -100,9 +100,10 @@ export default function PaymentForm() {
           Ingresa tus datos para hacer efectiva tu reserva y pagarla de forma
           rapida y segura
         </p>
+        <img src="/images/payment.png" alt="payment" className="w-1/3" />
       </div>
       <div
-        className="w-1/3 min-w-[900px] h-[80%] rounded-lg border-[#318F51] my-4 shadow-md bg-[#5FA77738]"
+        className="w-1/3 min-w-[900px] h-[500px] rounded-lg border-[#318F51] my-4 shadow-md bg-[#5FA77738]"
         id="formPayment"
       >
         {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
