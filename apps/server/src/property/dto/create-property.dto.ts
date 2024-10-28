@@ -41,10 +41,9 @@ export class CreatePropertyDto {
     ],
     description: 'Property photo URLs. Must include at least 3 photos.',
   })
-  @IsOptional()
-  @ArrayMinSize(3)
+  @ArrayMinSize(1)
   @IsUrl({}, { each: true })
-  readonly photos?: string[];
+  readonly photos: string[];
 
   @ApiProperty({
     example: 4,
