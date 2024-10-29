@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Sidebar from "../components/Sidebar";
 import React, { useState } from "react";
 const Messages = () => {
@@ -17,7 +17,6 @@ const Messages = () => {
     // Si se selecciona "Seleccionar todo", actualiza todos
     if (name === "selectAll") {
       setCheckboxes({
-        selectAll: checked,
         option1: checked,
         option2: checked,
         option3: checked,
@@ -102,21 +101,26 @@ const Messages = () => {
             </div>
           </div>
         </section>
-        <div className="mt-4 flex justify-between ">
+        <div className="pt-14 flex justify-between ">
           <div>
-             <span className="text-black text-sm">
-            Total seleccionados: {selectedCount}
-          </span>
+            <span className="text-gray-400 text-sm">
+              {selectedCount} de 3 mensajes seleccionados
+            </span>
           </div>
           <div>
-             <span className="text-black text-sm">
-            Total seleccionados: {selectedCount}
-          </span>
+            <span className="text-black text-sm">
+              Mensajes por pagina:
+              <input
+                type="number"
+                value="10"
+                class="w-32 p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              />
+            </span>
           </div>
           <div>
-             <span className="text-black text-sm">
-            Total seleccionados: {selectedCount}
-          </span>
+            <span className="text-black text-sm">
+              Pagina 1 de 1
+            </span>
           </div>
         </div>
       </div>
