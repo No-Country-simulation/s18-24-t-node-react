@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveToken, getToken } from "@/app/api/token";
-import { AlertPopup } from "@/app/components/Alert";
+import { AlertPopup } from "@/components/Alert";
 
 const Login = () => {
   const router = useRouter();

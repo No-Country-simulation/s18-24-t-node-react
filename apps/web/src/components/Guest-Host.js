@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Title } from "@/app/components/title-menu";
+import { Title } from "@/components/title-menu";
 
 const fileSchema = z
   .instanceof(File)

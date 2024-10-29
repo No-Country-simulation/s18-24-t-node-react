@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Title } from "@/app/components/title-menu";
+import { Title } from "@/components/title-menu";
+import userImage from '@/app/public/Perfil.png'
 
 const formSchema = z.object({
   username: z
@@ -52,7 +53,7 @@ export default function Profile() {
     }
   }
   return (
-    <div>
+    <div className="w-full">
       <Title
         title="Mi Perfil"
         description="Completa o edita tu informacion personal"
@@ -151,7 +152,7 @@ export default function Profile() {
                   Puedes subir una foto de hasta XXmb, en formato .jpg o .png.
                 </FormDescription>
                 <Avatar className="w-16 h-16">
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={userImage} />
                   <AvatarFallback>Booked</AvatarFallback>
                 </Avatar>
                 <FormControl>

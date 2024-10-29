@@ -1,5 +1,5 @@
 "use client";
-import { Title } from "@/app/components/title-menu";
+import { Title } from "@/components/title-menu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { AlertPopup } from "@/app/components/Alert";
+import { AlertPopup } from "@/components/Alert";
 import { newProperty } from "@/app/api/callApi";
 import { CldUploadWidget } from "next-cloudinary";
 

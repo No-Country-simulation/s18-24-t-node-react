@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { userRegister } from "@/app/api/callApi";
-import { AlertPopup } from "@/app/components/Alert";
+import { AlertPopup } from "@/components/Alert";
 import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {

@@ -44,14 +44,14 @@ export async function newProperty(property) {
       photos: property.photos
     };
     const formData = new FormData();
-    formData.append('title', propertyfilter.title); 
+    formData.append('title', String(propertyfilter.title)); 
     formData.append('description', propertyfilter.description); 
     formData.append('price', propertyfilter.price); 
     formData.append('max_people', propertyfilter.max_people); 
     propertyfilter.tags.forEach((tag, index) => { formData.append('tags[]', tag); });
     propertyfilter.photos.forEach((file, index) => { formData.append('photos', file);});
     console.log("datos enviados",formData); 
-    formData.forEach((value, key) => { console.log(`${key}: ${value}`);});
+    formData.forEach((value, key) => { console.log(`${key}: ${value} ${typeof(value)}`);});
     const response = await fetch(`${API}/property/register`, {
       method: "POST",
       headers: {

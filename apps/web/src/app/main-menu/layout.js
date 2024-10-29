@@ -1,6 +1,6 @@
-import { HeaderBooked } from "../components/headerBooked";
+import { HeaderBooked } from "@/components/headerBooked";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "../components/app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export const metadata = {
   title: "Mi Menu",
@@ -9,9 +9,9 @@ export const metadata = {
 
 export default function MainMenuLayout({ children }) {
   return (
-    <div className="grid grid-cols-[minmax(200px,250px)_minmax(700px,_1fr)]">
-      <HeaderBooked />
-      <SidebarProvider className="min-h-min">
+    <div className="flex flex-row ">
+      {/*<HeaderBooked />*/}
+      <SidebarProvider className="min-h-min max-w-[250px] min-w-[200px]">
         <AppSidebar />
       </SidebarProvider>
       {children}

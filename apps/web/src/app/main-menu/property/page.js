@@ -1,8 +1,8 @@
 "use client";
-import { Title } from "@/app/components/title-menu";
+import { Title } from "@/components/title-menu";
 import { Button } from "@/components/ui/button";
 import { School } from "lucide-react";
-import { GuestHost } from "@/app/components/Guest-Host";
+import { GuestHost } from "@/components/Guest-Host";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -32,7 +32,7 @@ export default function Property() {
     //setRender(<GuestHost />);
   }
   return (
-    <div >
+    <div className="w-full" >
       <Title
         title="Mis propiedades"
         description="Agrega, edita o elimina tus publicaciones como anfitrión."
