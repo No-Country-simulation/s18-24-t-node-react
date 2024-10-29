@@ -42,7 +42,7 @@ export class PropertyService {
   }
 
   async findAll(params: PropertyParamsDto) {
-    const { title, minPrice, maxPrice, tags, orderBy, location } = params;
+    const { title, minPrice, maxPrice, tags, orderBy, address } = params;
 
     // Inicializar el filtro vacío
     const filters: any = {};
@@ -80,8 +80,8 @@ export class PropertyService {
     }
 
     // Filtro por zona si está presente (búsqueda flexible con regex)
-    if (location) {
-      filters.address = { $regex: location, $options: 'i' }; // Buscar en el campo 'address' por coincidencias parciales
+    if (address) {
+      filters.address = { $regex: address, $options: 'i' }; // Buscar en el campo 'address' por coincidencias parciales
     }
 
     return await query.exec(); // Ejecutar la consulta con exec()

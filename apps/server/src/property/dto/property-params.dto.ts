@@ -23,15 +23,6 @@ export class PropertyParamsDto {
   @IsNumber()
   maxPrice: number;
 
-  /* @ApiPropertyOptional({
-    example: 100,
-    description: 'Max price of property to search',
-  })
-  @Type(() => Number)
-  @IsOptional()
-  @IsNumber()
-  price: number; */
-
   @ApiPropertyOptional({
     example: ['wifi', 'pool'],
     description: 'List of tags to search',
@@ -53,10 +44,10 @@ export class PropertyParamsDto {
   @ApiPropertyOptional({
     example:
       '5886, Soler, Palermo Hollywood, Buenos Aires, Buenos Aires, Distrito Audiovisual, C1414CWA, Argentina',
-    description: 'The location must be detailed',
+    description: 'The address must be detailed',
     type: [String],
   })
   @IsOptional()
   @IsString()
-  location: string;
+  address: string;
 }
