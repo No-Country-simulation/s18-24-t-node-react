@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { AlertPopup } from "@/app/components/Alert";
 import { newProperty } from "@/app/api/callApi";
+import { CldUploadWidget } from "next-cloudinary";
 
 const tags = [
   {
@@ -42,7 +43,7 @@ const tags = [
   },
   {
     id: "pool",
-    label: "Picina",
+    label: "Piscina",
   },
   {
     id: "with furniture",
@@ -87,8 +88,9 @@ const formSchema = z.object({
 });
 
 export default function RegisterProperty() {
+  const [resource, setResource] = useState();
   const [files, setFiles] = useState([]);
-  const [alert, setAlert] = useState({ show: false, message: "", type: "" })
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -104,12 +106,12 @@ export default function RegisterProperty() {
     },
   });
 
-  const handleInputChange = (event) => {
+  /*const handleInputChange = (event) => {
     event.preventDefault();
     let filesInput = Array.from(event.target.files);
     setFiles(filesInput);
     form.setValue("photos", filesInput);
-  };
+  };*/
 
   function onSubmit(values, event) {
     event.preventDefault();
@@ -118,19 +120,23 @@ export default function RegisterProperty() {
     if (!validationResult.success) {
       console.log(values);
       console.error(validationResult.error);
-      setAlert({ show: true, message: "error al validar los datos", type: "error" });
+      setAlert({
+        show: true,
+        message: "error al validar los datos",
+        type: "error",
+      });
     } else {
       console.log(values);
       console.log("Form submitted successfully!", validationResult.data);
       const response = newProperty(values);
-      response.then(result => {
+      response.then((result) => {
         //console.log('Resultado:', result);
-        if(result.message === "Registro exitoso"){
+        if (result.message === "Registro exitoso") {
           setAlert(result);
           //setTimeout(() => router.push("/auth/login"), 10000);
         }
-        setAlert(result)
-      })
+        setAlert(result);
+      });
     }
     setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
   }
@@ -342,7 +348,7 @@ export default function RegisterProperty() {
               </FormItem>
             )}
           />
-          <FormField
+          {/*<FormField
             control={form.control}
             name="photos"
             render={() => (
@@ -362,9 +368,31 @@ export default function RegisterProperty() {
                 <FormMessage />
               </FormItem>
             )}
-          />
-          <div className="flex justify-end w-[85%]">
-            <Button className="bg-color_form_button text-white" type="submit">
+          />*/}
+          <FormLabel>Agregar fotos de la propiedad</FormLabel>
+                <FormDescription>
+                  Puedes subir hasta 20 archivos formato imagen .jpg o .png.
+                </FormDescription>
+          <CldUploadWidget
+            signatureEndpoint="/api/cloudinary"
+            onSuccess={(result, { widget }) => {
+              setResource(result?.info);
+              setFiles(...files,result.info.url);
+              console.log(files)
+            }}
+            onQueuesEnd={(result, { widget }) => {
+              widget.close();
+            }}
+          >
+            {({ open }) => {
+              return <button className="bg-color_form_button text-white mt-5 rounded-md py-2 px-4" onClick={() => open()}>Agregar fotos</button>;
+            }}
+          </CldUploadWidget>
+          <div className="flex justify-end w-[90%]">
+            <Button
+              className="bg-color_form_button text-white mt-5"
+              type="submit"
+            >
               Cargar propiedad
             </Button>
           </div>

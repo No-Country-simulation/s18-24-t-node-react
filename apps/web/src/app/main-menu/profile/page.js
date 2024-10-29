@@ -160,8 +160,8 @@ export default function Profile() {
               </FormItem>
             )}
           />
-          <div className="flex justify-end w-[85%]">
-            <Button className="bg-[#318F51] text-white" type="submit">
+          <div className="flex justify-end w-[90%]">
+            <Button className="bg-[#318F51] text-white mt-5" type="submit">
               Actualizar
             </Button>
           </div>

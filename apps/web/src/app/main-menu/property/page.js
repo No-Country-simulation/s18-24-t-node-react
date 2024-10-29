@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { School } from "lucide-react";
 import { GuestHost } from "@/app/components/Guest-Host";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Property() {
+  const router = useRouter();
   const [show, setShow] = useState(false)
   const [render, setRender] = useState(
     <div className="w-[100%] h-[600px] bg-color_form_background flex flex-col items-center justify-center">
@@ -26,7 +28,8 @@ export default function Property() {
   function handleClick(e) {
     e.preventDefault();
     setShow(true);
-    setRender(<GuestHost />);
+    router.push("register-property")
+    //setRender(<GuestHost />);
   }
   return (
     <div >
