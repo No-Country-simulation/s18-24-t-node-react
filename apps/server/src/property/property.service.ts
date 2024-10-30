@@ -63,8 +63,14 @@ export class PropertyService {
       }
     }
 
-    if (tags && tags.length > 0) {
-      filters.tags = { $in: tags }; // Buscar propiedades que tengan todos los tags
+    if (tags) {
+      // Si es un string, conviértelo a un arreglo
+      const tagsArray = Array.isArray(tags) ? tags : [tags];
+
+      // Verificar si tagsArray está vacío o no
+      if (tagsArray.length > 0) {
+        filters.tags = { $in: tagsArray }; // Buscar propiedades que tengan cualquiera de los tags
+      }
     }
 
     // Construir la consulta
@@ -73,10 +79,12 @@ export class PropertyService {
     // Ordenar por precio de menor a mayor
     query = query.sort({ price: 1 }); // Usar 1 para ascendente, -1 para descendente
 
-    // Si se incluye `orderBy`, aplicamos ordenamiento
+    // Ordenar
     if (orderBy) {
-      const sortOrder = orderBy === 'ASC' ? 1 : -1; // Conversión manual
+      const sortOrder = orderBy === 'ASC' ? 1 : -1;
       query = query.sort({ createdAt: sortOrder });
+    } else {
+      query = query.sort({ price: 1 });
     }
 
     // Filtro por zona si está presente (búsqueda flexible con regex)

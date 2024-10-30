@@ -9,6 +9,7 @@ import {
   Min,
   IsObject,
   ValidateNested,
+  ValidateIf,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -69,6 +70,7 @@ export class CreatePropertyDto {
     description: 'Optional tags that describe the property',
   })
   @IsOptional()
+  @ValidateIf(o => Array.isArray(o.tags) || typeof o.tags === 'string')
   @IsArray()
   @IsString({ each: true })
   readonly tags?: string[];
