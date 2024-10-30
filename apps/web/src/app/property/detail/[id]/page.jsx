@@ -96,7 +96,7 @@ const PropertyDetail = () => {
                   name="peopleQuantity"
                   min={1}
                   max={20}
-                  className="w-full"
+                  className="w-full accent-[#318F51]"
                   onChange={data => setSelectedPeopleQuantity(data.target.value)}
                   value={selectedPeopleQuantity}
                 />
