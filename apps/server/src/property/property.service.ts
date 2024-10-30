@@ -1,10 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
 import { PropertyParamsDto } from './dto/property-params.dto';
+import { User } from 'src/users/entities/user.entity';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class PropertyService {
@@ -12,7 +14,7 @@ export class PropertyService {
     @InjectModel(Property.name) private propertyModel: Model<Property>,
   ) {}
 
-  async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
+  async create(createPropertyDto: CreatePropertyDto, userId: User): Promise<Property> {
     const { title, description, price, max_people, tags, photos } =
       createPropertyDto;
 
@@ -23,6 +25,7 @@ export class PropertyService {
       photos,
       max_people,
       tags,
+      userId: userId
     });
 
     return newProperty.save();
@@ -57,6 +60,19 @@ export class PropertyService {
     }
 
     return await query.exec(); // Ejecutar la consulta con exec()
+  }
+
+  // GetByUserId
+  async findAllByUserId(userId: string) {
+    console.log(userId);
+    const objectUserId = new Types.ObjectId(userId)
+    const properties = await this.propertyModel.find({ userId: objectUserId }).exec();
+    if (!properties || properties.length === 0) {
+      throw new NotFoundException(
+        `No properties found for user with ID ${userId}`,
+      );
+    }
+    return properties;
   }
 
   async update(
