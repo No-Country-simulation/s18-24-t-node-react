@@ -68,10 +68,7 @@ export class PropertyController {
   @ApiResponse({ status: 200, description: 'Register property success' })
   @ApiResponse({ status: 404, description: 'Property not created' })
   @Post('register')
-  @UseInterceptors(FilesInterceptor('images'))
-  @UseGuards(AuthGuard('jwt'))
   async create(
-    @UploadedFiles() files: Express.Multer.File[],
     @Body() createPropertyDto: CreatePropertyDto,
     @GetUser('userId') userId: string,
   ): Promise<Property> {
