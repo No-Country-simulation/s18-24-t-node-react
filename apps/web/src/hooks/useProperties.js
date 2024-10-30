@@ -40,8 +40,22 @@ export const useProperties = () => {
     }
   }
 
+  const getPropertyById = async (id) => {
+    try {
+      const response = await fetch(`https://booked-nu.vercel.app/property/${id}`)
+
+      if (!response.ok || response.status !== 200) throw new Error(`Error ${response.status}: ${response.statusText}`)
+
+      const propertyData = await response.json()
+      return propertyData
+    } catch (error) {
+      throw error
+    }
+  }
+
   return {
     getProperties,
+    getPropertyById,
     properties,
     isLoading
   }
