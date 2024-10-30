@@ -76,15 +76,12 @@ export class PropertyService {
     // Construir la consulta
     let query = this.propertyModel.find(filters);
 
-    // Ordenar por precio de menor a mayor
-    query = query.sort({ price: 1 }); // Usar 1 para ascendente, -1 para descendente
-
     // Ordenar
     if (orderBy) {
       const sortOrder = orderBy === 'ASC' ? 1 : -1;
       query = query.sort({ createdAt: sortOrder });
     } else {
-      query = query.sort({ price: 1 });
+      query = query.sort({ createdAt: 1 });
     }
 
     // Filtro por zona si está presente (búsqueda flexible con regex)
