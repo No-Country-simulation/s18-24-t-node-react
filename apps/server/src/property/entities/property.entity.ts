@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema({
   timestamps: true,
@@ -29,6 +29,9 @@ export class Property extends Document {
 
   @Prop()
   tags: string[];
+
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true }) // Tipo ObjectId y referencia al esquema User
+  userId: Types.ObjectId;
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);

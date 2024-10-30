@@ -13,7 +13,7 @@ export class PropertyService {
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    const { title, description, price, max_people, tags, photos } =
+    const { title, description, price, max_people, tags, photos, userId } =
       createPropertyDto;
 
     const newProperty = new this.propertyModel({
@@ -23,6 +23,7 @@ export class PropertyService {
       photos,
       max_people,
       tags,
+      userId: userId
     });
 
     return newProperty.save();
@@ -57,6 +58,17 @@ export class PropertyService {
     }
 
     return await query.exec(); // Ejecutar la consulta con exec()
+  }
+
+  // GetByUserId
+  async findAllByUserId(userId: string) {
+    const properties = await this.propertyModel.find({ userId }).exec();
+    if (!properties || properties.length === 0) {
+      throw new NotFoundException(
+        `No properties found for user with ID ${userId}`,
+      );
+    }
+    return properties;
   }
 
   async update(

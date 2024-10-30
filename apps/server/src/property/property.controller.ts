@@ -20,6 +20,8 @@ import { ObjectIdValidationPipe } from 'src/common/pipes/object-id-validation.pi
 import { PropertyParamsDto } from './dto/property-params.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/decorators/get-user.decorator';
+import { Types } from 'mongoose';
 
 @ApiTags('property')
 @Controller('property')
@@ -27,7 +29,7 @@ export class PropertyController {
   constructor(
     private readonly imageService: ImageService,
     private readonly propertyService: PropertyService,
-  ) { }
+  ) {}
 
   @ApiOperation({ summary: 'Find all properties' })
   @ApiResponse({ status: 200, description: 'Returns all properties success' })
@@ -35,6 +37,21 @@ export class PropertyController {
   @Get()
   async findAll(@Query() filterQuery: PropertyParamsDto) {
     return await this.propertyService.findAll(filterQuery);
+  }
+
+  @ApiOperation({ summary: 'Find all properties for the authenticated user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns all properties belonging to the authenticated user',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No properties found for the specified user',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('user/properties')
+  async findAllByUserId(@GetUser('id') userId: string) {
+    return await this.propertyService.findAllByUserId(userId);
   }
 
   @ApiOperation({ summary: 'Find a property by id' })
@@ -56,16 +73,19 @@ export class PropertyController {
   async create(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() createPropertyDto: CreatePropertyDto,
+    @GetUser('userId') userId: string,
   ): Promise<Property> {
     const imageUrls = await this.imageService.uploadImages(files);
 
     const propertyData = {
       ...createPropertyDto,
       photos: imageUrls,
+      userId: new Types.ObjectId(userId),
     };
 
     return this.propertyService.create(propertyData);
   }
+
   @ApiOperation({ summary: 'Get property by id' })
   @ApiResponse({ status: 200, description: 'Returns a property success' })
   @ApiResponse({ status: 404, description: 'Property not found' })

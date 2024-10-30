@@ -9,6 +9,7 @@ import {
   Min,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class CreatePropertyDto {
   @ApiProperty({
@@ -63,4 +64,6 @@ export class CreatePropertyDto {
   @IsArray()
   @IsString({ each: true })
   readonly tags?: string[];
+
+  userId: Types.ObjectId;
 }
