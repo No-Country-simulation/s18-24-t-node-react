@@ -95,13 +95,13 @@ const Page = () => {
 
   return (
     <section className="flex gap-20 p-8">
-      <div className="flex flex-col gap-4 bg-[#5FA77C82] px-6 py-8 rounded-2xl h-fit">
+      <div className="flex flex-col gap-4 bg-[#5FA77C82] px-6  w-[340px] py-3 rounded-2xl h-fit">
         <h2 className="text-xl font-semibold text-slate-950">Filtros</h2>
 
         <div className="space-y-2">
           <label htmlFor="title">Nombre</label>
           <input
-            className="rounded-md outline-none px-2 shadow-sm border border-slate-200"
+            className="rounded-md outline-none px-2 shadow-sm border border-slate-200 w-full"
             type="text"
             name="title"
             value={title ?? ''}
@@ -111,12 +111,10 @@ const Page = () => {
 
 
         <div className="space-y-2">
-          <div className="space-x-4">
-            <label htmlFor="peopleQuantity">Cantidad de personas</label>
-            <span className="text-slate-950 font-semibold" >{peopleQuantity}</span>
-          </div>
+          <label htmlFor="peopleQuantity">Cantidad de personas: {peopleQuantity}</label>
 
           <input
+            className="w-full"
             type="range"
             name="peopleQuantity"
             min={1}
@@ -126,14 +124,11 @@ const Page = () => {
           />
         </div>
 
-
         <div className="space-y-2">
-          <div className="space-x-4">
-            <label htmlFor="price">Precio Mínimo</label>
-            <span className="text-slate-950 font-semibold" >{minPrice}</span>
-          </div>
+          <label htmlFor="price">Precio Mínimo: ${minPrice ?? 0}</label>
 
           <input
+            className="w-full"
             type="range"
             name="minPrice"
             min={0}
