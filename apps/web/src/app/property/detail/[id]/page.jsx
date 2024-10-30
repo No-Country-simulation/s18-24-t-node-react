@@ -1,32 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { InputSearch } from "../../../../ui/InputSearch";
-import Datepicker from "react-tailwindcss-datepicker";
-import { CardProperty } from "../../../../components/CardProperty";
-import { useProperties } from "../../../../hooks/useProperties";
-import { Spinner } from "../../../../ui/Spinner";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Datepicker from "react-tailwindcss-datepicker";
+import { useProperties } from "../../../../hooks/useProperties";
+import { InputSearch } from "../../../../ui/InputSearch";
+import { Spinner } from "../../../../ui/Spinner";
 
-import userImage from '../../../public/Perfil.png'
+import userImage from '../../../public/Perfil.png';
+import { useInputSearch } from "../../../../hooks/useInputSearch";
 
 const PropertyDetail = () => {
 
   const params = useParams()
+  const router = useRouter()
 
   const [currentProperty, setCurrentProperty] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 
+  const [privateFilters, setPrivateFilters] = useState({})
+  const [selectedPeopleQuantity, setSelectedPeopleQuantity] = useState(1)
 
+  const { searchValues } = useInputSearch()
   const { getPropertyById } = useProperties()
 
   useEffect(() => {
+    if (searchValues) setPrivateFilters(searchValues)
+
     setIsLoading(true)
 
     getPropertyById(params?.id)
       .then(data => setCurrentProperty(data))
-      .catch(error => console.log(error))
+      .catch(error => router.push('/'))
       .finally(() => setIsLoading(false))
   }, []);
 
@@ -66,39 +72,75 @@ const PropertyDetail = () => {
 
   // const { guests, checkIn, checkOut } = filters;
 
+
+  //   {
+  //     "title": "Moderno Departamento en Núñez",
+  //     "description": "Un hermoso departamento con vista a la ciudad, ideal para parejas.",
+  //     "price": 111528,
+  //     "photos": [
+  //         "https://res.cloudinary.com/drmfu48bc/image/upload/v1730157179/rbdwmiti7fedydxrmsio.jpg",
+  //         "https://res.cloudinary.com/drmfu48bc/image/upload/v1730157179/gyhmklgchhs9abvlmjs0.jpg",
+  //         "https://res.cloudinary.com/drmfu48bc/image/upload/v1730157179/rnsshsuthprs0yr93vgz.jpg"
+  //     ],
+  //     "address": "5886, Soler, Palermo Hollywood, Buenos Aires, Buenos Aires, C1414CWA, Argentina",
+  //     "coordinates": {
+  //         "latitude": -34.585444,
+  //         "longitude": -58.430556,
+  //         "_id": "67201ea036582bff732eac9c",
+  //         "createdAt": "2024-10-28T23:30:40.987Z",
+  //         "updatedAt": "2024-10-28T23:30:40.987Z"
+  //     },
+  //     "max_people": 2,
+  //     "tags": [
+  //         "wifi",
+  //         "piscina"
+  //     ],
+  //     "createdAt": "2024-10-28T23:30:40.988Z",
+  //     "updatedAt": "2024-10-28T23:30:40.988Z",
+  //     "id": "67201ea036582bff732eac9b"
+  // }
+
+  const { destination, startDate, endDate } = privateFilters
+
   return (
     <section className="p-8 space-y-8">
       <div className="flex justify-center items-center">
         <InputSearch />
       </div>
 
+      {/* {currentProperty && !isLoading && <CardProperty property={currentProperty} />} */}
+      {isLoading && <Spinner />}
+
       <div className="flex gap-20">
         <div className="space-y-4 h-fit w-80 bg-slate-50 rounded p-6 border border-slate-200 shadow-md sticky top-4">
-          <header>
-            <h2>Nombre de la cabana</h2>
-            <p className="font-semibold"><span className="text-green-600">$25</span>/la noche</p>
+          <header className="space-y-2">
+            <h2 className="font-semibold">{currentProperty?.title}</h2>
+            <p className="font-medium"><span className="text-green-600">${currentProperty?.price}</span>/la noche</p>
           </header>
 
           <div>
             <label>Desde - Hasta</label>
             <Datepicker
+              value={{ startDate: privateFilters.startDate, endDate: privateFilters.endDate }}
               toggleClassName={'hidden'}
               readOnly
               inputClassName={'w-20 hover:cursor-pointer w-full bg-transparent'}
               placeholder="Dates"
+              onChange={(data) => setPrivateFilters(data)}
             />
           </div>
 
           <div>
             <label htmlFor="">Huespedes</label>
+            <p>{selectedPeopleQuantity}</p>
             <input
               type="range"
               name="peopleQuantity"
               min={1}
               max={20}
               className="w-full"
-            // value={peopleQuantity ?? 0}
-            // onChange={data => setFilters(prev => ({ ...prev, peopleQuantity: data?.target?.value }))}
+              onChange={data => setSelectedPeopleQuantity(data.target.value)}
+              value={selectedPeopleQuantity}
             />
           </div>
 
@@ -111,35 +153,31 @@ const PropertyDetail = () => {
 
         </div>
 
-        {/* {currentProperty && !isLoading && <CardProperty property={currentProperty} />} */}
-        {/* {isLoading && <Spinner />} */}
-
         <div className="space-y-8 size-[1200px] h-full">
           {/* Photos */}
           <div className="p-8 grid grid-cols-8 gap-2 bg-[#5FA77738] rounded-xl">
             <img
-              className="col-span-4 row-span-3 w-full h-full object-cover"
+              className="col-span-4 row-span-2 w-full h-full object-cover"
               src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
             />
 
             <img
               className="col-start-5 col-span-4 w-full"
               src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-              alt=""
             />
 
             <img
               className="col-start-5 col-span-2"
               src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-              alt=""
             />
 
             <img
               className="col-start-7 col-span-2"
               src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-              alt=""
             />
 
+            <p className="col-start-1 col-end-8 font-bold text-slate-700 text-xl pt-2">{currentProperty.title}</p>
+            <p className="col-start-1 col-end-8 text-slate-500 font-bold">{currentProperty?.tags?.join(' - ')}</p>
           </div>
 
           <hr className="h-[1px] bg-slate-400 mx-10" />
