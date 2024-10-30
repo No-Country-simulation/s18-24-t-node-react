@@ -1,13 +1,15 @@
 import { create } from 'zustand'
-
-import { devtools } from 'zustand/middleware'
+import { devtools, persist } from 'zustand/middleware'
 import { createFilterSlice } from './filters/filter.slice'
 
-
-export const useBoundStore = create()(
-  devtools(
-    (...a) => ({
-      ...createFilterSlice(...a),
-    })
+export const useBoundStore = create(
+  persist(
+    devtools((set, get) => ({
+      ...createFilterSlice(set, get),
+    })),
+    {
+      name: 'my-store',
+      getStorage: () => localStorage
+    }
   )
-)
+);
