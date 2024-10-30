@@ -92,7 +92,6 @@ export class PropertyController {
   }
   @ApiOperation({ summary: 'Delete property by id' })
   @ApiResponse({ status: 200, description: 'Deleted property success' })
-  @ApiResponse({ status: 404, description: 'Property not deleted' })
   @Delete('delete/:id')
   @UseGuards(AuthGuard('jwt'))
   async remove(@Param('id') id: number) {

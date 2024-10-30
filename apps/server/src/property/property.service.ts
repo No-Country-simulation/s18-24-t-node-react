@@ -15,8 +15,16 @@ export class PropertyService {
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto, userId: User): Promise<Property> {
-    const { title, description, price, max_people, tags, photos } =
-      createPropertyDto;
+    const {
+      title,
+      description,
+      price,
+      max_people,
+      tags,
+      photos,
+      address,
+      coordinates,
+    } = createPropertyDto;
 
     const newProperty = new this.propertyModel({
       title,
@@ -25,6 +33,11 @@ export class PropertyService {
       photos,
       max_people,
       tags,
+      address,
+      coordinates: {
+        latitude: coordinates.latitude,
+        longitude: coordinates.longitude,
+      },
       userId: userId
     });
 
@@ -32,7 +45,7 @@ export class PropertyService {
   }
 
   async findAll(params: PropertyParamsDto) {
-    const { title, price, tags, orderBy } = params;
+    const { title, minPrice, maxPrice, tags, orderBy, address } = params;
 
     // Inicializar el filtro vacío
     const filters: any = {};
@@ -42,21 +55,41 @@ export class PropertyService {
       filters.title = { $regex: title, $options: 'i' }; // Búsqueda insensible a mayúsculas/minúsculas
     }
 
-    if (price) {
-      filters.price = { $gte: price }; // Usar operador $gte para mayor o igual
+    // Filtro por rango de precios
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      filters.price = {};
+      if (minPrice !== undefined) {
+        filters.price.$gte = minPrice;
+      }
+      if (maxPrice !== undefined) {
+        filters.price.$lte = maxPrice;
+      }
     }
 
-    if (tags && tags.length > 0) {
-      filters.tags = { $in: tags }; // Buscar propiedades que tengan todos los tags
+    if (tags) {
+      // Si es un string, conviértelo a un arreglo
+      const tagsArray = Array.isArray(tags) ? tags : [tags];
+
+      // Verificar si tagsArray está vacío o no
+      if (tagsArray.length > 0) {
+        filters.tags = { $in: tagsArray }; // Buscar propiedades que tengan cualquiera de los tags
+      }
     }
 
     // Construir la consulta
     let query = this.propertyModel.find(filters);
 
-    // Si se incluye `orderBy`, aplicamos ordenamiento
+    // Ordenar
     if (orderBy) {
-      const sortOrder = orderBy === 'ASC' ? 1 : -1; // Conversión manual
+      const sortOrder = orderBy === 'ASC' ? 1 : -1;
       query = query.sort({ createdAt: sortOrder });
+    } else {
+      query = query.sort({ createdAt: 1 });
+    }
+
+    // Filtro por zona si está presente (búsqueda flexible con regex)
+    if (address) {
+      filters.address = { $regex: address, $options: 'i' }; // Buscar en el campo 'address' por coincidencias parciales
     }
 
     return await query.exec(); // Ejecutar la consulta con exec()

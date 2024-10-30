@@ -11,6 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
   const handleSubmit = async (e) => {
@@ -26,14 +27,12 @@ const Login = () => {
           body: JSON.stringify({ email, password }),
         }
       );
-      console.log(response);
 
       if (response.ok) {
         const data = await response.json();
         saveToken(data.token);
         setAlert({ show: true, message: "Login successful", type: "success" });
         setTimeout(() => router.push("/"), 11000);
-        //router.push("/");
       } else {
         const errorDetails = await response.json(); // Captura más detalles del error
         throw new Error(
