@@ -83,7 +83,9 @@ export class PropertyController {
       userId: new Types.ObjectId(userId),
     };
 
-    return this.propertyService.create(propertyData);
+    console.log(propertyData.userId);
+
+    return this.propertyService.create(propertyData, userId);
   }
 
   @ApiOperation({ summary: 'Get property by id' })

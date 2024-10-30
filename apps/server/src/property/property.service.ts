@@ -12,8 +12,8 @@ export class PropertyService {
     @InjectModel(Property.name) private propertyModel: Model<Property>,
   ) {}
 
-  async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    const { title, description, price, max_people, tags, photos, userId } =
+  async create(createPropertyDto: CreatePropertyDto, userId: string): Promise<Property> {
+    const { title, description, price, max_people, tags, photos } =
       createPropertyDto;
 
     const newProperty = new this.propertyModel({
