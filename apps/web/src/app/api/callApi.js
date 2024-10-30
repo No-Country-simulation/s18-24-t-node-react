@@ -80,3 +80,43 @@ export async function newProperty(property) {
     }
   }
 }
+
+export async function paymentStripe(newPayment) {
+  const sanitizedPayment = {
+    ...newPayment,
+    unitAmount: Number(newPayment.unitAmount),
+    quantity: Number(newPayment.quantity),
+  };
+  try {
+    const response = await fetch(
+      `http://localhost:3001/payments/createPaymentSession`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sanitizedPayment),
+      }
+    );
+    if (!response.ok) {
+      console.error("Error al registrar el pago", response.status);
+      return null;
+    }
+
+    const data = await response.json();
+
+    if (data && data.url) {
+      return data.url;
+    } else {
+      console.error(
+        "Error al registrar el pago: No se recibió una URL",
+        response.status
+      );
+      return null;
+    }
+  } catch (error) {
+    console.error("Error al registrar el pago", error);
+    return null;
+  }
+}
+//
