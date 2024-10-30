@@ -22,6 +22,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { Types } from 'mongoose';
+import { User } from 'src/users/entities/user.entity';
 
 @ApiTags('property')
 @Controller('property')
@@ -68,16 +69,14 @@ export class PropertyController {
   @ApiResponse({ status: 200, description: 'Register property success' })
   @ApiResponse({ status: 404, description: 'Property not created' })
   @Post('register')
+  @UseGuards(AuthGuard('jwt'))
   async create(
     @Body() createPropertyDto: CreatePropertyDto,
-    @GetUser('userId') userId: string,
+    @GetUser() userId: User,
   ): Promise<Property> {
-    const imageUrls = await this.imageService.uploadImages(files);
-
     const propertyData = {
       ...createPropertyDto,
-      photos: imageUrls,
-      userId: new Types.ObjectId(userId),
+      userId: userId.id,
     };
 
     console.log(propertyData.userId);

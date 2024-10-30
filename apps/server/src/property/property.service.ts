@@ -5,6 +5,7 @@ import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
 import { PropertyParamsDto } from './dto/property-params.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PropertyService {
@@ -12,7 +13,7 @@ export class PropertyService {
     @InjectModel(Property.name) private propertyModel: Model<Property>,
   ) {}
 
-  async create(createPropertyDto: CreatePropertyDto, userId: string): Promise<Property> {
+  async create(createPropertyDto: CreatePropertyDto, userId: User): Promise<Property> {
     const { title, description, price, max_people, tags, photos } =
       createPropertyDto;
 
