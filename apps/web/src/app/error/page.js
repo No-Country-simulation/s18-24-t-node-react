@@ -1,5 +1,16 @@
+"use client";
 import { HeaderBooked } from "@/app/components/headerBooked";
+import { useRouter } from "next/navigation";
+
+const handelClick = () => {
+  window.location.href = "/home";
+};
+
 export default function Error() {
+  const router = useRouter();
+  const handelClick = () => {
+    router.push("/");
+  };
   return (
     <div>
       <HeaderBooked />
@@ -8,7 +19,10 @@ export default function Error() {
         <p className="text-lg mb-6">
           We couldn't process your payment. Please try again.
         </p>
-        <button className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600">
+        <button
+          onClick={handelClick}
+          className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600"
+        >
           Go Back
         </button>
       </div>
