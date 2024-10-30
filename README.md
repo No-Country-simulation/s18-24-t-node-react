@@ -75,5 +75,7 @@ Booked, es una plataforma de reservas de inmuebles temporales diseñada para que
 
 <a href="https://github.com/No-Country-simulation/s18-24-t-node-react" target="_blank">Repositorio en GitHub</a>
 
+<a href="[https://github.com/No-Country-simulation/s18-24-t-node-react](https://inmobapp2024.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog)" target="_blank">Espacio de trabajo en Jira</a>
+
 <a href="https://www.sitio.com" target="_blank">Sitio Web en Producción</a>
 
