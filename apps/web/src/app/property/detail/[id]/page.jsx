@@ -72,36 +72,6 @@ const PropertyDetail = () => {
 
   // const { guests, checkIn, checkOut } = filters;
 
-
-  //   {
-  //     "title": "Moderno Departamento en Núñez",
-  //     "description": "Un hermoso departamento con vista a la ciudad, ideal para parejas.",
-  //     "price": 111528,
-  //     "photos": [
-  //         "https://res.cloudinary.com/drmfu48bc/image/upload/v1730157179/rbdwmiti7fedydxrmsio.jpg",
-  //         "https://res.cloudinary.com/drmfu48bc/image/upload/v1730157179/gyhmklgchhs9abvlmjs0.jpg",
-  //         "https://res.cloudinary.com/drmfu48bc/image/upload/v1730157179/rnsshsuthprs0yr93vgz.jpg"
-  //     ],
-  //     "address": "5886, Soler, Palermo Hollywood, Buenos Aires, Buenos Aires, C1414CWA, Argentina",
-  //     "coordinates": {
-  //         "latitude": -34.585444,
-  //         "longitude": -58.430556,
-  //         "_id": "67201ea036582bff732eac9c",
-  //         "createdAt": "2024-10-28T23:30:40.987Z",
-  //         "updatedAt": "2024-10-28T23:30:40.987Z"
-  //     },
-  //     "max_people": 2,
-  //     "tags": [
-  //         "wifi",
-  //         "piscina"
-  //     ],
-  //     "createdAt": "2024-10-28T23:30:40.988Z",
-  //     "updatedAt": "2024-10-28T23:30:40.988Z",
-  //     "id": "67201ea036582bff732eac9b"
-  // }
-
-  const { destination, startDate, endDate } = privateFilters
-
   return (
     <section className="p-8 space-y-8">
       <div className="flex justify-center items-center">
@@ -111,149 +81,152 @@ const PropertyDetail = () => {
       {/* {currentProperty && !isLoading && <CardProperty property={currentProperty} />} */}
       {isLoading && <Spinner />}
 
-      <div className="flex gap-20">
-        <div className="space-y-4 h-fit w-80 bg-slate-50 rounded p-6 border border-slate-200 shadow-md sticky top-4">
-          <header className="space-y-2">
-            <h2 className="font-semibold">{currentProperty?.title}</h2>
-            <p className="font-medium"><span className="text-green-600">${currentProperty?.price}</span>/la noche</p>
-          </header>
+      {
+        !isLoading && Object.keys(currentProperty).length > 1 && (
+          <div className="flex gap-20">
+            <div className="space-y-4 h-fit w-80 bg-slate-50 rounded p-6 border border-slate-200 shadow-md sticky top-4">
+              <header className="space-y-2">
+                <h2 className="font-semibold">{currentProperty?.title}</h2>
+                <p className="font-medium"><span className="text-green-600">${currentProperty?.price}</span>/la noche</p>
+              </header>
 
-          <div>
-            <label>Desde - Hasta</label>
-            <Datepicker
-              value={{ startDate: privateFilters.startDate, endDate: privateFilters.endDate }}
-              toggleClassName={'hidden'}
-              readOnly
-              inputClassName={'w-20 hover:cursor-pointer w-full bg-transparent'}
-              placeholder="Dates"
-              onChange={(data) => setPrivateFilters(data)}
-            />
-          </div>
+              <div>
+                <label>Desde - Hasta</label>
+                <Datepicker
+                  value={{ startDate: privateFilters.startDate, endDate: privateFilters.endDate }}
+                  toggleClassName={'hidden'}
+                  readOnly
+                  inputClassName={'w-20 hover:cursor-pointer w-full bg-transparent'}
+                  placeholder="Dates"
+                  onChange={(data) => setPrivateFilters(data)}
+                />
+              </div>
 
-          <div>
-            <label htmlFor="">Huespedes</label>
-            <p>{selectedPeopleQuantity}</p>
-            <input
-              type="range"
-              name="peopleQuantity"
-              min={1}
-              max={20}
-              className="w-full"
-              onChange={data => setSelectedPeopleQuantity(data.target.value)}
-              value={selectedPeopleQuantity}
-            />
-          </div>
+              <div>
+                <label htmlFor="">Huespedes: {selectedPeopleQuantity}</label>
+                <input
+                  type="range"
+                  name="peopleQuantity"
+                  min={1}
+                  max={20}
+                  className="w-full"
+                  onChange={data => setSelectedPeopleQuantity(data.target.value)}
+                  value={selectedPeopleQuantity}
+                />
+              </div>
 
-          <button
-            // onClick={handleClickReserve}
-            className="bg-[#318F51] py-1 rounded-lg w-full px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
-          >
-            Reservar
-          </button>
+              <button
+                // onClick={handleClickReserve}
+                className="bg-[#318F51] py-1 rounded-lg w-full px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
+              >
+                Reservar
+              </button>
 
-        </div>
-
-        <div className="space-y-8 size-[1200px] h-full">
-          {/* Photos */}
-          <div className="p-8 grid grid-cols-8 gap-2 bg-[#5FA77738] rounded-xl">
-            <img
-              className="col-span-4 row-span-2 w-full h-full object-cover"
-              src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-            />
-
-            <img
-              className="col-start-5 col-span-4 w-full"
-              src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-            />
-
-            <img
-              className="col-start-5 col-span-2"
-              src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-            />
-
-            <img
-              className="col-start-7 col-span-2"
-              src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-            />
-
-            <p className="col-start-1 col-end-8 font-bold text-slate-700 text-xl pt-2">{currentProperty.title}</p>
-            <p className="col-start-1 col-end-8 text-slate-500 font-bold">{currentProperty?.tags?.join(' - ')}</p>
-          </div>
-
-          <hr className="h-[1px] bg-slate-400 mx-10" />
-
-          <div className="flex font-bold text-xl px-10 gap-20">
-            <h3 className="text-slate-700">Mejor valorado por los huéspedes</h3>
-
-            <div className="flex gap-4">
-              <small>4.9 ⭐</small>
-              <p>10</p>
-            </div>
-          </div>
-
-          <hr className="h-[1px] bg-slate-400 mx-10" />
-
-          {/* Mapa */}
-          <div className="space-y-20">
-            <h3 className="font-bold text-xl px-10 text-slate-700">Aca es donde vas a estar</h3>
-            <img
-              className="w-full h-[440px] object-cover"
-              src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
-              alt=""
-            />
-          </div>
-
-          <h3 className="font-bold text-xl px-10 text-slate-700 py-10">Conoce a tu anfitrion</h3>
-
-          {/* User */}
-          <div className="flex justify-center items-center gap-10 text-slate-700">
-            <div className="flex flex-col justify-center items-center p-4 w-[500px]">
-              <Image src={userImage} alt="Perfil" width={100} height={100} />
-              <strong>Marcelo</strong>
-              <span className="py-2">Información confirmada</span>
-              <ul>
-                <li>✔ Identidad</li>
-                <li>✔ Correo electronico</li>
-                <li>✔ Numero de telefono</li>
-              </ul>
             </div>
 
-            <div>
-              <div className="flex divide-x">
-                <div className="flex flex-col justify-center items-center pr-4 font-bold">
-                  <h4>Calificacion</h4>
-                  4.8 ⭐
-                </div>
+            <div className="space-y-8 size-[1200px] h-full">
+              {/* Photos */}
+              <div className="p-8 grid grid-cols-8 gap-2 bg-[#5FA77738] rounded-xl">
+                <img
+                  className="col-span-4 row-span-2 w-full h-full object-cover"
+                  src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
+                />
 
-                <div className="flex flex-col justify-center items-center px-4">
-                  <strong>1</strong>
-                  <small>Año de experiencia como anfitrion</small>
-                </div>
+                <img
+                  className="col-start-5 col-span-4 w-full"
+                  src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
+                />
 
-                <div className="flex flex-col justify-center items-center pl-4 font-bold">
-                  <h4>Evaluaciones</h4>
-                  <small>8</small>
+                <img
+                  className="col-start-5 col-span-2"
+                  src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
+                />
+
+                <img
+                  className="col-start-7 col-span-2"
+                  src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
+                />
+
+                <p className="col-start-1 col-end-8 font-bold text-slate-700 text-xl pt-2">{currentProperty.title}</p>
+                <p className="col-start-1 col-end-8 text-slate-500 font-bold">{currentProperty?.tags?.join(' - ')}</p>
+              </div>
+
+              <hr className="h-[1px] bg-slate-400 mx-10" />
+
+              <div className="flex font-bold text-xl px-10 gap-20">
+                <h3 className="text-slate-700">Mejor valorado por los huéspedes</h3>
+
+                <div className="flex gap-4">
+                  <small>4.9 ⭐</small>
+                  <p>10</p>
                 </div>
               </div>
 
-              <hr className="bg-slate-400 my-4" />
+              <hr className="h-[1px] bg-slate-400 mx-10" />
 
-              <div className="mx-2 space-y-4">
-                <p>
-                  Hola, soy Marcelo, mi viaje ha sido moldeado por el deseo de crear momentos únicos para nuestros huéspedes. Con una pasión por la bienvenida y la atención al detalle, transformamos nuestro Sitio en un refugio donde el confort y la naturaleza se unen en armonía.
+              {/* Mapa */}
+              <div className="space-y-20">
+                <h3 className="font-bold text-xl px-10 text-slate-700">Aca es donde vas a estar</h3>
+                <img
+                  className="w-full h-[440px] object-cover"
+                  src="https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg"
+                  alt=""
+                />
+              </div>
 
-                  Si tienes cualquier pregunta, ponte en contacto conmigo.
-                </p>
+              <h3 className="font-bold text-xl px-10 text-slate-700 py-10">Conoce a tu anfitrion</h3>
 
-                <div className="flex justify-between items-center">
-                  <p className="text-amber-500 font-semibold">Enviale un mensaje a tu anfitrion</p>
-                  <button className="bg-[#318F51] py-1 px-2 rounded text-slate-50 font-semibold">Toca aca para chatear</button>
+              {/* User */}
+              <div className="flex justify-center items-center gap-10 text-slate-700">
+                <div className="flex flex-col justify-center items-center p-4 w-[500px]">
+                  <Image src={userImage} alt="Perfil" width={100} height={100} />
+                  <strong>Marcelo</strong>
+                  <span className="py-2">Información confirmada</span>
+                  <ul>
+                    <li>✔ Identidad</li>
+                    <li>✔ Correo electronico</li>
+                    <li>✔ Numero de telefono</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <div className="flex divide-x">
+                    <div className="flex flex-col justify-center items-center pr-4 font-bold">
+                      <h4>Calificacion</h4>
+                      4.8 ⭐
+                    </div>
+
+                    <div className="flex flex-col justify-center items-center px-4">
+                      <strong>1</strong>
+                      <small>Año de experiencia como anfitrion</small>
+                    </div>
+
+                    <div className="flex flex-col justify-center items-center pl-4 font-bold">
+                      <h4>Evaluaciones</h4>
+                      <small>8</small>
+                    </div>
+                  </div>
+
+                  <hr className="bg-slate-400 my-4" />
+
+                  <div className="mx-2 space-y-4">
+                    <p>
+                      Hola, soy Marcelo, mi viaje ha sido moldeado por el deseo de crear momentos únicos para nuestros huéspedes. Con una pasión por la bienvenida y la atención al detalle, transformamos nuestro Sitio en un refugio donde el confort y la naturaleza se unen en armonía.
+
+                      Si tienes cualquier pregunta, ponte en contacto conmigo.
+                    </p>
+
+                    <div className="flex justify-between items-center">
+                      <p className="text-amber-500 font-semibold">Enviale un mensaje a tu anfitrion</p>
+                      <button className="bg-[#318F51] py-1 px-2 rounded text-slate-50 font-semibold">Toca aca para chatear</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        )
+      }
     </section >
   );
 };
