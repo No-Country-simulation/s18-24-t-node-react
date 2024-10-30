@@ -1,5 +1,5 @@
 import "./auth.css";
-import { HeaderBooked } from "../components/headerBooked";
+//import { HeaderBooked } from "../components/headerBooked";
 
 
 export const metadata = {
@@ -9,9 +9,9 @@ export const metadata = {
 
 export default function loginLayaout({ children }) {
   return (
-    <>
-      <HeaderBooked/>
+    <div id="bodyLogin">
+      {/*<HeaderBooked/>*/}
       {children}
-    </>
+    </div>
   );
 }

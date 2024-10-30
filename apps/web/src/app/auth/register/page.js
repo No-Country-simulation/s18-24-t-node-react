@@ -1,19 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { userRegister } from "@/app/api/callApi";
-import { AlertPopup } from "@/app/components/Alert";
+import { AlertPopup } from "@/components/Alert";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
   const [passMatch, setPassMatch] = useState(true);
   const [birthDate, setBirthDate] = useState(Date());
   const [showPassword, setShowPassword] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
-
-  useEffect(() => {
-    verifyPassword();
-  }, [pass1, pass2]);
 
   function handleChangePass1(e) {
     e.preventDefault();
@@ -23,9 +21,13 @@ export default function RegisterForm() {
     e.preventDefault();
     setPass2(e.target.value);
   }
-  function verifyPassword() {
+  const verifyPassword = useCallback(() => {
     pass1 === pass2 ? setPassMatch(true) : setPassMatch(false);
-  }
+  }, [pass1, pass2]);
+
+  useEffect(() => {
+    verifyPassword();
+  }, [verifyPassword]);
 
   function handleChangeDate(e) {
     e.preventDefault();
@@ -66,25 +68,20 @@ export default function RegisterForm() {
         newFormData[key] = value;
       }
       //paso a mi api los datos
-      const response = await userRegister(newFormData);
-
-      if (response.ok) {
-        setAlert({ show: true, message: "Registro exitoso", type: "success" });
-      } else {
-        let error = response.json();
-        error.then((result) => {
-          const message = result.message;
-          if (Array.isArray(message)) {
-            let lista = [];
-            message.forEach((element, index) => {
-              lista.push(<p key={index}>{element}</p>);
-            });
-            setAlert({ show: true, message: lista, type: "error" });
-          } else {
-            setAlert({ show: true, message: message, type: "error" });
-          }
-        });
-      }
+      const response = userRegister(newFormData);
+      response.then(result => {
+        //console.log('Resultado:', result);
+        if(result.message === "Registro exitoso"){
+          setAlert(result);
+          setTimeout(() => router.push("/auth/login"), 10000);
+        }
+        setAlert(result)
+      })
+      .catch(error => {
+        //console.error('Error:', error);
+        setAlert(error)
+      });
+      
     } else {
       isOverAge(birthDate)
         ? setAlert({
@@ -104,6 +101,7 @@ export default function RegisterForm() {
   }
 
   return (
+    <div className="flex items-center justify-center">
     <div
       className="w-1/3 min-w-[500px] h-[80%] rounded-lg border-[#318F51] border-[.2px] my-4 shadow-md"
       id="formRegister"
@@ -180,7 +178,7 @@ export default function RegisterForm() {
           name="mobileNumber"
           type="tel"
           pattern="^\+?[0-9]+$"
-          minLength={14}
+          minLength={12}
           maxLength={14}
           placeholder="Ej: +549 111 1111111"
           title="Solo se permiten números del 0 al 9 y el signo +"
@@ -221,6 +219,7 @@ export default function RegisterForm() {
           Crear cuenta
         </button>
       </form>
+    </div>
     </div>
   );
 }
