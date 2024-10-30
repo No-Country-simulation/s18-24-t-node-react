@@ -3,15 +3,15 @@ import { PaymentsService } from './payments.service';
 
 @Controller('payments')
 export class PaymentsController {
-    constructor(private paymentsService: PaymentsService) {}
+  constructor(private paymentsService: PaymentsService) {}
 
-    @Post('createPaymentSession')
-    async createPaymentSession(@Body() data: any) {
-        return this.paymentsService.createPaymentSession(data);
-    }
+  @Post('createPaymentSession')
+  async createPaymentSession(@Body() data: any) {
+    return this.paymentsService.createPaymentSession(data);
+  }
 
-    @Get('paymentDetails')
-    async getPaymentDetails(@Query('sessionID') sessionId: string) {
-      return this.paymentsService.getPaymentDetails(sessionId);
-    }
+  @Get('paymentDetails')
+  async getPaymentDetails(@Query('sessionID') sessionId: string) {
+    return this.paymentsService.getPaymentDetails(sessionId);
+  }
 }

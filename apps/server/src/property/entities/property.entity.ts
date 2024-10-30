@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
 import { Coordinates, CoordinatesSchema } from './coordinates.entity';
+import { Document, Types } from 'mongoose';
 
 @Schema({
   timestamps: true,
@@ -37,9 +37,8 @@ export class Property extends Document {
   @Prop()
   tags: string[];
 
-
-  /*@Prop({ type: Types.ObjectId, required:true, ref: 'User'})
-    user_id: Types.ObjectId; */
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  userId: Types.ObjectId;
 }
 
 export const PropertySchema = SchemaFactory.createForClass(Property);

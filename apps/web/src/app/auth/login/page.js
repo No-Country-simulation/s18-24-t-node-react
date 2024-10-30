@@ -2,12 +2,17 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { saveToken, getToken } from "@/app/api/token";
+import { AlertPopup } from "@/components/Alert";
 
 const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,21 +27,28 @@ const Login = () => {
           body: JSON.stringify({ email, password }),
         }
       );
-      console.log(response);
 
       if (response.ok) {
-        alert("Login successful");
-        router.push("/");
+        const data = await response.json();
+        saveToken(data.token);
+        setAlert({ show: true, message: "Login successful", type: "success" });
+        setTimeout(() => router.push("/"), 11000);
       } else {
-        alert("Login failed");
+        const errorDetails = await response.json(); // Captura más detalles del error
+        throw new Error(
+          `HTTP error! Status: ${response.status}, Message: ${errorDetails.message}`
+        );
       }
     } catch (error) {
+      setAlert({ show: true, message: error.message, type: "error" });
       console.error(error);
     }
+    setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
   };
   return (
     <>
       <div className="min-h-screen flex items-center justify-center mt-7">
+        {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
         <form
           className="bg-white bg-opacity-65 p-8 rounded-3xl shadow-md w-full max-w-md"
           onSubmit={handleSubmit}
@@ -47,6 +59,9 @@ const Login = () => {
           <h4 className="text-xl text-left text-gray-500">
             Entrar a mi cuenta
           </h4>
+          <Link href={"/auth/register"}>
+            <u>Registrarme</u>
+          </Link>
           <div className="flex flex-col items-center justify-center">
             <div className="mb-4 w-80 ">
               <label
