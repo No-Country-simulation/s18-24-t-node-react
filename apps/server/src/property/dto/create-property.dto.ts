@@ -64,6 +64,4 @@ export class CreatePropertyDto {
   @IsArray()
   @IsString({ each: true })
   readonly tags?: string[];
-
-  userId: Types.ObjectId;
 }
