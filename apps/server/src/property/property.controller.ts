@@ -21,7 +21,6 @@ import { PropertyParamsDto } from './dto/property-params.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
-import { Types } from 'mongoose';
 import { User } from 'src/users/entities/user.entity';
 
 @ApiTags('property')
@@ -51,8 +50,8 @@ export class PropertyController {
   })
   @UseGuards(AuthGuard('jwt'))
   @Get('user/properties')
-  async findAllByUserId(@GetUser('id') userId: string) {
-    return await this.propertyService.findAllByUserId(userId);
+  async findAllByUserId(@GetUser() user: User) {
+    return await this.propertyService.findAllByUserId(user.id);
   }
 
   @ApiOperation({ summary: 'Find a property by id' })
