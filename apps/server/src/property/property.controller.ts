@@ -20,6 +20,8 @@ import { ObjectIdValidationPipe } from 'src/common/pipes/object-id-validation.pi
 import { PropertyParamsDto } from './dto/property-params.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/decorators/get-user.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 @ApiTags('property')
 @Controller('property')
@@ -27,7 +29,7 @@ export class PropertyController {
   constructor(
     private readonly imageService: ImageService,
     private readonly propertyService: PropertyService,
-  ) { }
+  ) {}
 
   @ApiOperation({ summary: 'Find all properties' })
   @ApiResponse({ status: 200, description: 'Returns all properties success' })
@@ -35,6 +37,21 @@ export class PropertyController {
   @Get()
   async findAll(@Query() filterQuery: PropertyParamsDto) {
     return await this.propertyService.findAll(filterQuery);
+  }
+
+  @ApiOperation({ summary: 'Find all properties for the authenticated user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns all properties belonging to the authenticated user',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No properties found for the specified user',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('user/properties')
+  async findAllByUserId(@GetUser() user: User) {
+    return await this.propertyService.findAllByUserId(user.id);
   }
 
   @ApiOperation({ summary: 'Find a property by id' })
@@ -51,21 +68,21 @@ export class PropertyController {
   @ApiResponse({ status: 200, description: 'Register property success' })
   @ApiResponse({ status: 404, description: 'Property not created' })
   @Post('register')
-  @UseInterceptors(FilesInterceptor('images'))
   @UseGuards(AuthGuard('jwt'))
   async create(
-    @UploadedFiles() files: Express.Multer.File[],
     @Body() createPropertyDto: CreatePropertyDto,
+    @GetUser() userId: User,
   ): Promise<Property> {
-    const imageUrls = await this.imageService.uploadImages(files);
-
     const propertyData = {
       ...createPropertyDto,
-      photos: imageUrls,
+      userId: userId.id,
     };
 
-    return this.propertyService.create(propertyData);
+    console.log(propertyData.userId);
+
+    return this.propertyService.create(propertyData, userId);
   }
+
   @ApiOperation({ summary: 'Get property by id' })
   @ApiResponse({ status: 200, description: 'Returns a property success' })
   @ApiResponse({ status: 404, description: 'Property not found' })
