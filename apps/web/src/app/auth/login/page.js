@@ -5,64 +5,41 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveToken, getToken } from "@/app/api/token";
 import { AlertPopup } from "@/components/Alert";
+import { useAuth } from "@/hooks/useAuth";
 
 const Login = () => {
   const router = useRouter();
+
+  const { loginWithCredentials } = useAuth()
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-      console.log(response);
 
-      if (response.ok) {
-        const data = await response.json();
-        saveToken(data.token);
-        setAlert({ show: true, message: "Login successful", type: "success" });
-        setTimeout(() => router.push("/"), 11000);
-        //router.push("/");
-      } else {
-        const errorDetails = await response.json(); // Captura más detalles del error
-        throw new Error(
-          `HTTP error! Status: ${response.status}, Message: ${errorDetails.message}`
-        );
-      }
-    } catch (error) {
-      setAlert({ show: true, message: error.message, type: "error" });
-      console.error(error);
-    }
-    setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
+    await loginWithCredentials({ email, password })
+      .then(() => router.push('/'))
+      .catch(error => setAlert({ show: true, message: error.message, type: "error" }))
   };
+
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center mt-7">
+      <div className="min-h-screen flex flex-col items-center gap-5 mt-52">
         {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
         <form
-          className="bg-white bg-opacity-65 p-8 rounded-3xl shadow-md w-full max-w-md"
+          className="bg-white bg-opacity-65 p-8 rounded-3xl shadow-md w-full max-w-md h-fit"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-3xl font-bold mb-1 text-left text-black">
-            Ingresar nuevamente
-          </h2>
-          <h4 className="text-xl text-left text-gray-500">
-            Entrar a mi cuenta
-          </h4>
-          <Link href={"/auth/register"}>
-            <u>Registrarme</u>
-          </Link>
+          <div className="text-center">
+            <h2 className="text-3xl font-bold mb-1 text-black">
+              Ingresar nuevamente
+            </h2>
+            <h4 className="text-xl text-gray-500">Entrar a mi cuenta</h4>
+          </div>
           <div className="flex flex-col items-center justify-center">
             <div className="mb-4 w-80 ">
               <label
@@ -96,7 +73,11 @@ const Login = () => {
                 placeholder="Escribe tu contraseña"
               />
             </div>
-            <div className="flex justify-end w-80">
+
+            <div className="flex justify-between w-80">
+              <Link href={"/auth/register"}>
+                <u>Registrarme</u>
+              </Link>
               <button
                 type="submit"
                 className="w-28 text-sm bg-color_form_button rounded-md text-white py-2 px-4 focus:outline-none focus:shadow-outline hover:bg-blue-700"

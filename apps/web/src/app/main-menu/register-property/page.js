@@ -27,6 +27,7 @@ import { useState } from "react";
 import { AlertPopup } from "@/components/Alert";
 import { newProperty } from "@/app/api/callApi";
 import { CldUploadWidget } from "next-cloudinary";
+import Autocomplete from "@/components/ui/Autocomplete";
 
 const tags = [
   {
@@ -62,11 +63,13 @@ const tags = [
     label: "Espacio de trabajo",
   },
 ];
+
 const fileSchema = z
   .instanceof(File)
   .refine((file) => ["image/jpeg", "image/png"].includes(file.type), {
     message: "El archivo debe ser un JPEG o PNG",
   });
+
 const formSchema = z.object({
   title: z.string().min(4, {
     message: "Selecciona una opcion",
@@ -91,6 +94,7 @@ export default function RegisterProperty() {
   const [resource, setResource] = useState();
   const [files, setFiles] = useState([]);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -140,8 +144,13 @@ export default function RegisterProperty() {
     }
     setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
   }
+
+  const handleSelect = (location) => {
+    console.log(`Latitud: ${location.lat}, Longitud: ${location.lon}`);
+  };
+
   return (
-    <div>
+    <div className="mx-auto">
       <Title
         title="Agregar nueva propiedad"
         description="Agrega, edita o elimina tus publicaciones."
@@ -296,6 +305,18 @@ export default function RegisterProperty() {
             )}
           />
           <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dirección (autocompletado)</FormLabel>
+                <FormControl>
+                  <Autocomplete onSelect={handleSelect} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {/* <FormField
             control={form.control.pais}
             name="pais"
             render={({ field }) => (
@@ -347,7 +368,7 @@ export default function RegisterProperty() {
                 </FormControl>
               </FormItem>
             )}
-          />
+          /> */}
           {/*<FormField
             control={form.control}
             name="photos"
@@ -370,22 +391,29 @@ export default function RegisterProperty() {
             )}
           />*/}
           <FormLabel>Agregar fotos de la propiedad</FormLabel>
-                <FormDescription>
-                  Puedes subir hasta 20 archivos formato imagen .jpg o .png.
-                </FormDescription>
+          <FormDescription>
+            Puedes subir hasta 20 archivos formato imagen .jpg o .png.
+          </FormDescription>
           <CldUploadWidget
             signatureEndpoint="/api/cloudinary"
             onSuccess={(result, { widget }) => {
               setResource(result?.info);
-              setFiles(...files,result.info.url);
-              console.log(files)
+              setFiles(...files, result.info.url);
+              console.log(files);
             }}
             onQueuesEnd={(result, { widget }) => {
               widget.close();
             }}
           >
             {({ open }) => {
-              return <button className="bg-color_form_button text-white mt-5 rounded-md py-2 px-4" onClick={() => open()}>Agregar fotos</button>;
+              return (
+                <button
+                  className="bg-color_form_button text-white mt-5 rounded-md py-2 px-4"
+                  onClick={() => open()}
+                >
+                  Agregar fotos
+                </button>
+              );
             }}
           </CldUploadWidget>
           <div className="flex justify-end w-[90%]">

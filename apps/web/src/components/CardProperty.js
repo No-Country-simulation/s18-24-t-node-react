@@ -28,7 +28,9 @@ export const CardProperty = ({ property }) => {
   //     "id": "671139059bc699366d668548"
   // },
 
-  const photoUrl = 'https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg'
+  const photoUrl = photos.length > 0
+    ? photos[0]
+    : 'https://agentrealestateschools.com/wp-content/uploads/2021/11/real-estate-property.jpg'
 
   return (
     <div className="border-2 border-[#5FA77780] rounded-2xl overflow-hidden shadow-lg transition-transform transform hover:scale-105 hover:cursor-pointer">
@@ -37,7 +39,7 @@ export const CardProperty = ({ property }) => {
           src={photoUrl}
           width={300}
           height={300}
-          alt={`Destino`}
+          alt={`Photo of property`}
           className="object-cover w-full h-auto"
         />
 
