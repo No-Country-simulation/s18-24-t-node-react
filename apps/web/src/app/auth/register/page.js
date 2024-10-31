@@ -91,10 +91,19 @@ export default function RegisterForm() {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-
       <div
         className="p-4 min-w-[500px] h-[80%] rounded-lg border-[#318F51] border-[.2px] shadow-md"
-        id="formRegister"
+        id="formRegister">
+      {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
+      <h2 className="font-semibold text-4xl my-2 ml-2">Registrarme</h2>
+      <p className="text-[#71717A] text-xl font-normal ml-2">
+        Crear mi cuenta en Booked
+      </p>
+      <form
+        className="px-8 mx-12 flex flex-col items-end"
+        onSubmit={handleSubmit}
+        id="register"
+
       >
         {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
         <h2 className="font-semibold text-4xl my-2 ml-2">Registrarme</h2>

@@ -11,6 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
   const handleSubmit = async (e) => {
@@ -42,7 +43,7 @@ const Login = () => {
 
         saveToken(data.token);
         setAlert({ show: true, message: "Login successful", type: "success" });
-      setTimeout(() => router.push("/"), 11000);
+        setTimeout(() => router.push("/"), 11000);
     } catch (error) {
       setAlert({ show: true, message: error.message, type: "error" });
     }

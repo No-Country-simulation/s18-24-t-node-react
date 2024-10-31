@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -37,14 +45,16 @@ export class ReviewController {
   @ApiResponse({ status: 200, description: 'Review updated successfully' })
   @ApiResponse({ status: 400, description: 'Review not actualized' })
   @Patch('patch/:id')
-  async update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    
+  async update(
+    @Param('id') id: string,
+    @Body() updateReviewDto: UpdateReviewDto,
+  ) {
     return this.reviewService.update(id, updateReviewDto);
   }
 
   @ApiOperation({ summary: 'Delete a review' })
   @ApiResponse({ status: 200, description: 'Deleted review successfully' })
-  @ApiResponse({ status: 404, description: 'Review not deleted'})
+  @ApiResponse({ status: 404, description: 'Review not deleted' })
   @Delete('delete/:id')
   async remove(@Param('id') id: string) {
     return this.reviewService.remove(id);

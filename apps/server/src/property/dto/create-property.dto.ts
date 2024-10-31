@@ -1,15 +1,25 @@
-import { Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  ArrayMinSize,
-  IsArray,
-  IsNumber,
-  IsOptional,
   IsString,
+  IsNumber,
+  IsArray,
+  IsOptional,
+  ArrayMinSize,
   IsUrl,
   Min,
+  IsObject,
+  ValidateNested,
+  ValidateIf,
 } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Types } from 'mongoose';
+import { Type } from 'class-transformer';
+
+class Coordinates {
+  @IsNumber()
+  latitude: number;
+
+  @IsNumber()
+  longitude: number;
+}
 
 export class CreatePropertyDto {
   @ApiProperty({
@@ -60,7 +70,23 @@ export class CreatePropertyDto {
     description: 'Optional tags that describe the property',
   })
   @IsOptional()
+  @ValidateIf(o => Array.isArray(o.tags) || typeof o.tags === 'string')
   @IsArray()
   @IsString({ each: true })
   readonly tags?: string[];
+
+  @ApiProperty({
+    example: '123 Calle Principal, Ciudad, Provincia',
+    description: 'Address of the property',
+  })
+  @IsString()
+  readonly address: string;
+
+  @ApiProperty({
+    description: 'Coordinates of the property',
+    type: Coordinates,
+  })
+  @ValidateNested()
+  @Type(() => Coordinates)
+  readonly coordinates: Coordinates;
 }
