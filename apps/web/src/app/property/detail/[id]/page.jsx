@@ -30,16 +30,16 @@ const PropertyDetail = () => {
 
   const handleClickReserve = async () => {
     const payment = {
-    name: currentProperty.title,
-    description: currentProperty.description,
-    currency: "USD",
-    unit_amount: currentProperty.price,
-    quantity: 1,
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
-  }
+      name: currentProperty.title,
+      description: currentProperty.description,
+      currency: "USD",
+      unit_amount: totalPrice * 100,
+      quantity: 1,
+      success_url: "http://localhost:3000/success",
+      cancel_url: "http://localhost:3000/cancel",
+    }
 
-  const responseUrl = await paymentStripe(payment);
+    const responseUrl = await paymentStripe(payment);
 
     if (responseUrl) {
       window.location.href = responseUrl;
@@ -71,8 +71,8 @@ const PropertyDetail = () => {
 
     return days;
   }
-  
-    useEffect(() => {
+
+  useEffect(() => {
     setIsLoading(true);
 
     getPropertyById(params?.id)
@@ -80,13 +80,13 @@ const PropertyDetail = () => {
       .catch((error) => router.push("/"))
       .finally(() => setIsLoading(false));
   }, []);
-  
-    useEffect(() => {
+
+  useEffect(() => {
     const totalDays = countDaysBetweenDates(
       privateFilters.startDate,
       privateFilters.endDate
     );
-    const total = (currentProperty?.price * totalDays).toFixed(2);
+    const total = (currentProperty?.price * totalDays).toFixed(0);
 
     setTotalPrice(total);
   }, [currentProperty, privateFilters]);
@@ -153,12 +153,12 @@ const PropertyDetail = () => {
               />
             </div>
 
-              <button
-                 onClick={handleClickReserve}
-                className="bg-[#318F51] py-1 rounded-lg w-full px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
-              >
-                Reservar
-              </button>
+            <button
+              onClick={handleClickReserve}
+              className="bg-[#318F51] py-1 rounded-lg w-full px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
+            >
+              Reservar
+            </button>
             <strong>Total: ${totalPrice}</strong>
           </div>
 
