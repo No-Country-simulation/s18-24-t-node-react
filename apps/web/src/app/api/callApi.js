@@ -35,17 +35,23 @@ export async function newProperty(property) {
       price: Number(property.price),
       max_people: Number(property.max_people),
       tags: property.tags,
-      photos: property.photos
+      photos: property.photos,
     };
     const formData = new FormData();
-    formData.append('title', String(propertyfilter.title)); 
-    formData.append('description', propertyfilter.description); 
-    formData.append('price', propertyfilter.price); 
-    formData.append('max_people', propertyfilter.max_people); 
-    propertyfilter.tags.forEach((tag, index) => { formData.append('tags[]', tag); });
-    propertyfilter.photos.forEach((file, index) => { formData.append('photos', file);});
-    console.log("datos enviados",formData); 
-    formData.forEach((value, key) => { console.log(`${key}: ${value} ${typeof(value)}`);});
+    formData.append("title", String(propertyfilter.title));
+    formData.append("description", propertyfilter.description);
+    formData.append("price", propertyfilter.price);
+    formData.append("max_people", propertyfilter.max_people);
+    propertyfilter.tags.forEach((tag, index) => {
+      formData.append("tags[]", tag);
+    });
+    propertyfilter.photos.forEach((file, index) => {
+      formData.append("photos", file);
+    });
+    console.log("datos enviados", formData);
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value} ${typeof value}`);
+    });
     const response = await fetch(`${API}/property/register`, {
       method: "POST",
       headers: {
@@ -79,7 +85,8 @@ export async function paymentStripe(newPayment) {
   const sanitizedPayment = {
     ...newPayment,
     unitAmount: Number(newPayment.unitAmount),
-    quantity: Number(newPayment.quantity),
+    quantity: Number(newPayment.quantity) || 1,
+    currency: newPayment.currency?.toUpperCase() || "USD",
   };
   try {
     const response = await fetch(

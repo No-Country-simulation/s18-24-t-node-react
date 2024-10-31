@@ -1,6 +1,4 @@
 "use client";
-
-import { HeaderBooked } from "@/app/components/headerBooked";
 import { useRouter } from "next/navigation";
 
 export default function Success() {
@@ -11,7 +9,6 @@ export default function Success() {
 
   return (
     <div>
-      <HeaderBooked />
       <div className="flex flex-col items-center justify-center bg-white min-h-screen text-black p-4">
         <h1 className="text-4xl font-bold mb-4 text-green-600">
           Payment Successful

@@ -7,6 +7,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 import { useProperties } from "../../../../hooks/useProperties";
 import { InputSearch } from "../../../../ui/InputSearch";
 import { Spinner } from "../../../../ui/Spinner";
+import { paymentStripe } from "@/app/api/callApi";
 
 import userImage from "../../../public/Perfil.png";
 import { useInputSearch } from "../../../../hooks/useInputSearch";
@@ -27,24 +28,38 @@ const PropertyDetail = () => {
   const { searchValues } = useInputSearch();
   const { getPropertyById } = useProperties();
 
-  useEffect(() => {
-    setIsLoading(true);
+  const handleClickReserve = async () => {
+    const payment = {
+    name: currentProperty.title,
+    description: currentProperty.description,
+    currency: "USD",
+    unit_amount: currentProperty.price,
+    quantity: 1,
+    success_url: "http://localhost:3000/success",
+    cancel_url: "http://localhost:3000/cancel",
+  }
 
-    getPropertyById(params?.id)
-      .then((data) => setCurrentProperty(data))
-      .catch((error) => router.push("/"))
-      .finally(() => setIsLoading(false));
-  }, []);
+  const responseUrl = await paymentStripe(payment);
 
-  useEffect(() => {
-    const totalDays = countDaysBetweenDates(
-      privateFilters.startDate,
-      privateFilters.endDate
+    if (responseUrl) {
+      window.location.href = responseUrl;
+    } else {
+      setAlert({
+        show: true,
+        message: "Error al registrar el pago",
+        type: "error",
+      });
+    }
+    setTimeout(
+      () =>
+        setAlert({
+          show: false,
+          message: "",
+          type: "",
+        }),
+      10000
     );
-    const total = (currentProperty?.price * totalDays).toFixed(2);
-
-    setTotalPrice(total);
-  }, [currentProperty, privateFilters]);
+  }
 
   function countDaysBetweenDates(startDate, endDate) {
     const start = new Date(startDate);
@@ -56,6 +71,25 @@ const PropertyDetail = () => {
 
     return days;
   }
+  
+    useEffect(() => {
+    setIsLoading(true);
+
+    getPropertyById(params?.id)
+      .then((data) => setCurrentProperty(data))
+      .catch((error) => router.push("/"))
+      .finally(() => setIsLoading(false));
+  }, []);
+  
+    useEffect(() => {
+    const totalDays = countDaysBetweenDates(
+      privateFilters.startDate,
+      privateFilters.endDate
+    );
+    const total = (currentProperty?.price * totalDays).toFixed(2);
+
+    setTotalPrice(total);
+  }, [currentProperty, privateFilters]);
 
   useEffect(() => {
     if (Object.keys(searchValues).length > 0)
@@ -119,14 +153,15 @@ const PropertyDetail = () => {
               />
             </div>
 
+              <button
+                 onClick={handleClickReserve}
+                className="bg-[#318F51] py-1 rounded-lg w-full px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
+              >
+                Reservar
+              </button>
             <strong>Total: ${totalPrice}</strong>
-            <button
-              // onClick={handleClickReserve}
-              className="bg-[#318F51] py-1 rounded-lg w-full px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
-            >
-              Reservar
-            </button>
           </div>
+
 
           <div className="space-y-8 size-[1200px] h-full">
             {/* Photos */}
@@ -245,70 +280,6 @@ const PropertyDetail = () => {
       )}
     </section>
   );
-};
+}
 
 export default PropertyDetail;
-
-// <div className="flex flex-col gap-4 bg-white px-6 py-8 rounded-2xl h-fit border border-gray-300">
-//         <h2 className="text-xl font-semibold text-slate-950">
-//           Noche de la cabaña
-//           <p>25/la noche</p>
-//         </h2>
-//         <div className="space-y-2">
-//           <div className="space-x-4">
-//             <label htmlFor="guests">Cantidad de huéspedes</label>
-//             <span className="text-slate-950 font-semibold">{guests}</span>
-//           </div>
-
-//           <input
-//             type="number"
-//             name="guests"
-//             min={1}
-//             max={20}
-//             value={guests ?? 0}
-//             onChange={(data) =>
-//               setFilters((prev) => ({
-//                 ...prev,
-//                 guests: data?.target?.value,
-//               }))
-//             }
-//           />
-//         </div>
-
-//         <div className="space-y-2">
-//           <label htmlFor="checkIn">Check-In</label>
-//           <input
-//             className="rounded-md outline-none px-2 shadow-sm border border-slate-200"
-//             type="date"
-//             name="checkIn"
-//             value={checkIn}
-//             onChange={(data) =>
-//               setFilters((prev) => ({ ...prev, checkIn: data?.target?.value }))
-//             }
-//           />
-//         </div>
-
-//         <div className="space-y-2">
-//           <label htmlFor="checkOut">Check-Out</label>
-//           <input
-//             className="rounded-md outline-none px-2 shadow-sm border border-slate-200"
-//             type="date"
-//             name="checkOut"
-//             value={checkOut}
-//             onChange={(data) =>
-//               setFilters((prev) => ({ ...prev, checkOut: data?.target?.value }))
-//             }
-//           />
-//         </div>
-
-//         {/* Reserve button */}
-//         <button
-//           onClick={handleClickReserve}
-//           className="bg-[#5FA77C82] py-1 rounded-2xl w-fit px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"
-//         >
-//           Reservar
-//         </button>
-//       </div>
-//       <div className="flex flex-col gap-10 justify-center items-center w-full h-full">
-//         <InputSearch />
-//       </div>
