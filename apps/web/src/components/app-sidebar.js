@@ -39,7 +39,7 @@ import {
 
   export function AppSidebar() {
     return (
-      <Sidebar variant="floating" side="left" collapsible="none" className="mx-5 my-9 bg-[hsl(var(--background))]">
+      <Sidebar variant="floating" side="left" collapsible="none" className="mx-5 my-9 bg-[hsl(var(--background))] rounded">
         <SidebarContent>
           <SidebarGroup>
             {/*<SidebarGroupLabel>Application</SidebarGroupLabel>*/}

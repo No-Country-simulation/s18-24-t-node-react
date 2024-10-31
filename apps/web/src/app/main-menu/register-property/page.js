@@ -144,7 +144,7 @@ export default function RegisterProperty() {
     setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
   }
   return (
-    <div>
+    <div className="mx-auto">
       <Title
         title="Agregar nueva propiedad"
         description="Agrega, edita o elimina tus publicaciones."
@@ -298,6 +298,9 @@ export default function RegisterProperty() {
               </FormItem>
             )}
           />
+          {/* <FormField 
+            control={form.}
+          /> */}
           <FormField
             control={form.control.pais}
             name="pais"
@@ -373,22 +376,29 @@ export default function RegisterProperty() {
             )}
           />*/}
           <FormLabel>Agregar fotos de la propiedad</FormLabel>
-                <FormDescription>
-                  Puedes subir hasta 20 archivos formato imagen .jpg o .png.
-                </FormDescription>
+          <FormDescription>
+            Puedes subir hasta 20 archivos formato imagen .jpg o .png.
+          </FormDescription>
           <CldUploadWidget
             signatureEndpoint="/api/cloudinary"
             onSuccess={(result, { widget }) => {
               setResource(result?.info);
-              setFiles(...files,result.info.url);
-              console.log(files)
+              setFiles(...files, result.info.url);
+              console.log(files);
             }}
             onQueuesEnd={(result, { widget }) => {
               widget.close();
             }}
           >
             {({ open }) => {
-              return <button className="bg-color_form_button text-white mt-5 rounded-md py-2 px-4" onClick={() => open()}>Agregar fotos</button>;
+              return (
+                <button
+                  className="bg-color_form_button text-white mt-5 rounded-md py-2 px-4"
+                  onClick={() => open()}
+                >
+                  Agregar fotos
+                </button>
+              );
             }}
           </CldUploadWidget>
           <div className="flex justify-end w-[90%]">
