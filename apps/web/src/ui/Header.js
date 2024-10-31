@@ -27,6 +27,7 @@ export const Header = () => {
     const token = window.localStorage.getItem('token')
 
     checkAuthStatus(token)
+      .catch(() => { })
   }, [])
 
 
