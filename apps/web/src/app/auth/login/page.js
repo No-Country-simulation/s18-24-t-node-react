@@ -11,7 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
+
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
   const handleSubmit = async (e) => {
@@ -28,22 +28,21 @@ const Login = () => {
         }
       );
 
-
       if (!response.ok) {
-        const errorMessages = await response.json()
+        const errorMessages = await response.json();
 
         if (Array.isArray(errorMessages.messages)) {
-          throw new Error(errorMessages.message?.map(msg => msg).join(','))
+          throw new Error(errorMessages.message?.map((msg) => msg).join(","));
         }
 
-        throw new Error(errorMessages.message)
+        throw new Error(errorMessages.message);
       }
 
-        const data = await response.json();
+      const data = await response.json();
 
-        saveToken(data.token);
-        setAlert({ show: true, message: "Login successful", type: "success" });
-        setTimeout(() => router.push("/"), 11000);
+      saveToken(data.token);
+      setAlert({ show: true, message: "Login successful", type: "success" });
+      setTimeout(() => router.push("/"), 3000);
     } catch (error) {
       setAlert({ show: true, message: error.message, type: "error" });
     }

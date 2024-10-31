@@ -19,11 +19,11 @@ export default function RootLayout({ children }) {
       <body className={`${roboto.className} antialiased bg-slate-50`}>
         <Header />
 
-        <main className="min-h-screen">
+        <main className="min-h-screen mb-20">
           {children}
         </main>
 
-        <footer className='bg-[#5FA777] h-80 pt-40' />
+        <footer className='bg-[#5FA777] h-30 pt-40' />
       </body>
     </html>
   );

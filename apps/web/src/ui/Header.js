@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import { REM } from "next/font/google";
@@ -21,12 +21,11 @@ import {
 import { useBoundStore } from "@/store/bound.store";
 
 export const Header = () => {
-
-  const hasToken = window.localStorage.getItem('token')
+  const hasToken = window.localStorage.getItem("token");
 
   return (
     <header className="relative w-full h-[110px] top-0 overflow-hidden bg-[#5FA777] px-8 shadow-2xl">
-      <div className="flex h-full justify-between items-center">
+      <div className="flex h-full justify-between items-center pr-10">
         {/*<Link href={'/'} className='text-5xl font-bold text-white hover:text-opacity-70'>Booked</Link>*/}
         <Link href={"/"} className="flex flex-row ">
           <h1
@@ -73,31 +72,37 @@ export const Header = () => {
             />
           </svg>
         </Link>
-        <DropdownMenu>
+        {hasToken ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger className="focus:outline-none">
+              <Image src={userImage} alt="Perfil" width={70} height={70} />
+            </DropdownMenuTrigger>
 
-          {
-            hasToken && (
-              <DropdownMenuTrigger>
-                <Image src={userImage} alt="Perfil" width={70} height={70} />
-              </DropdownMenuTrigger>
-            )
-          }
-
-          <DropdownMenuContent className="bg-[#5FA777] w-[50px]">
-            <DropdownMenuItem className="text-white">
-              <Link href={"/main-menu/profile"}>Mi perfil</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-white">
-            <Link href={"/main-menu/register-property"}>Cargar una propiedad</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-white">
-              <Link
-                onClick={() => window.localStorage.removeItem('token')}
-                href={"/auth/login"}
-              >Cerrar sesion</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent className="bg-[#5FA777] w-[180px]">
+              <DropdownMenuItem className="text-white flex justify-center">
+                <Link href={"/main-menu/profile"}>Mi perfil</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-white flex justify-center">
+                <Link href={"/main-menu/register-property"}>
+                  Cargar una propiedad
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-white flex justify-center">
+                <Link
+                  onClick={() => window.localStorage.removeItem("token")}
+                  href={"/auth/login"}
+                >
+                  Cerrar sesión
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <div className="w-1/8 flex gap-7">
+            <Link href={"/auth/login"} className="px-5 py-2 bg-white text-[#5FA777] rounded-xl">Login</Link>
+            <Link href={"/auth/register"} className="px-5 py-2 bg-white text-[#5FA777] rounded-xl">Register</Link>
+          </div>
+        )}
       </div>
     </header>
   );

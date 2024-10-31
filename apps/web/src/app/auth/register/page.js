@@ -6,15 +6,30 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useBoundStore } from "@/store/bound.store";
 
-const RegisterSchema = z.object({
-  name: z.string({ required_error: 'Name is required' }).min(1, 'Name is required'),
-  email: z.string({ required_error: 'Email is required' }).email('Invalid email format'),
-  password: z.string({ required_error: 'Password is required' }).min(1, 'Password is required'),
-  confirmPassword: z.string({ required_error: 'Confirm password is required' }).min(1, 'Password is required'),
-  mobileNumber: z.string({ required_error: 'Mobile is required' }).min(1, 'Mobile is required'),
-  birthDate: z.string({ required_error: 'BirthDate is required' }).min(1, 'BirthDate is required'),
-  nationality: z.string({ required_error: 'Nationality is required' }).min(1, 'Nationality is required')
-})
+const RegisterSchema = z
+  .object({
+    name: z
+      .string({ required_error: "Name is required" })
+      .min(1, "Name is required"),
+    email: z
+      .string({ required_error: "Email is required" })
+      .email("Invalid email format"),
+    password: z
+      .string({ required_error: "Password is required" })
+      .min(1, "Password is required"),
+    confirmPassword: z
+      .string({ required_error: "Confirm password is required" })
+      .min(1, "Password is required"),
+    mobileNumber: z
+      .string({ required_error: "Mobile is required" })
+      .min(1, "Mobile is required"),
+    birthDate: z
+      .string({ required_error: "BirthDate is required" })
+      .min(1, "BirthDate is required"),
+    nationality: z
+      .string({ required_error: "Nationality is required" })
+      .min(1, "Nationality is required"),
+  })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
@@ -23,7 +38,7 @@ const RegisterSchema = z.object({
 export default function RegisterForm() {
   const router = useRouter();
 
-  const setUser = useBoundStore(state => state.setUser)
+  const setUser = useBoundStore((state) => state.setUser);
 
   const [showPassword, setShowPassword] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
@@ -58,32 +73,31 @@ export default function RegisterForm() {
     try {
       const data = RegisterSchema.parse(fields);
 
-      const { confirmPassword, ...fieldData } = data
+      const { confirmPassword, ...fieldData } = data;
 
-      const { token, user } = await userRegister(fieldData)
+      const { token, user } = await userRegister(fieldData);
 
-      if (!token) throw new Error('Missing token')
+      if (!token) throw new Error("Missing token");
 
-      window.localStorage.setItem('token', token)
+      window.localStorage.setItem("token", token);
 
-      setUser(user)
+      setUser(user);
 
-      router.push('/')
+      router.push("/");
     } catch (e) {
-      let errors
+      let errors;
 
       if (e instanceof z.ZodError) {
-        errors = e.errors.map(({ message }) => message).join(' - ')
-
+        errors = e.errors.map(({ message }) => message).join(" - ");
       } else {
-        errors = e.message
+        errors = e.message;
       }
 
       setAlert({
         show: true,
         message: errors,
         type: "error",
-      })
+      });
 
       setTimeout(() => setAlert({ show: false, message: "", type: "" }), 4000);
     }
@@ -92,24 +106,16 @@ export default function RegisterForm() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div
-        className="p-4 min-w-[500px] h-[80%] rounded-lg border-[#318F51] border-[.2px] shadow-md"
-        id="formRegister">
-      {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
-      <h2 className="font-semibold text-4xl my-2 ml-2">Registrarme</h2>
-      <p className="text-[#71717A] text-xl font-normal ml-2">
-        Crear mi cuenta en Booked
-      </p>
-      <form
-        className="px-8 mx-12 flex flex-col items-end"
-        onSubmit={handleSubmit}
-        id="register"
-
+        className="p-4 min-w-[500px] h-[80%] rounded-lg border-[#318F51] border-[.2px] shadow-md flex flex-col items-center gap-6"
+        id="formRegister"
       >
-        {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
-        <h2 className="font-semibold text-4xl my-2 ml-2">Registrarme</h2>
-        <p className="text-[#71717A] text-xl font-normal ml-2">
-          Crear mi cuenta en Booked
-        </p>
+        <div className="text-center">
+          {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
+          <h2 className="font-semibold text-4xl my-2 ml-2 ">Registrarme</h2>
+          <p className="text-[#71717A] text-xl font-normal ml-2">
+            Crear mi cuenta en Booked
+          </p>
+        </div>
 
         <form
           className="px-8 mx-12 flex flex-col items-end"
@@ -187,7 +193,9 @@ export default function RegisterForm() {
             placeholder="Elije una fecha"
             required
           ></input>
-          <label className="block py-1 w-[100%] font-medium">Nacionalidad*</label>
+          <label className="block py-1 w-[100%] font-medium">
+            Nacionalidad*
+          </label>
           <input
             className="block p-1 w-[100%] rounded"
             name="nationality"
@@ -196,8 +204,8 @@ export default function RegisterForm() {
             required
           ></input>
           <label className="font-normal">
-            <input className="mx-1" type="checkbox" required /> He leido y acepto
-            los
+            <input className="mx-1" type="checkbox" required /> He leido y
+            acepto los
             <a className="text-[#318F51]" href="#">
               {" "}
               Términos y condiciones{" "}
