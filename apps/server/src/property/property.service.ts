@@ -97,7 +97,6 @@ export class PropertyService {
 
   // GetByUserId
   async findAllByUserId(userId: string) {
-    console.log(userId);
     const objectUserId = new Types.ObjectId(userId)
     const properties = await this.propertyModel.find({ userId: objectUserId }).exec();
     if (!properties || properties.length === 0) {

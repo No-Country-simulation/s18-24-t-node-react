@@ -77,9 +77,6 @@ export class PropertyController {
       ...createPropertyDto,
       userId: userId.id,
     };
-
-    console.log(propertyData.userId);
-
     return this.propertyService.create(propertyData, userId);
   }
 
