@@ -114,7 +114,7 @@ const Page = () => {
           <label htmlFor="peopleQuantity">Cantidad de personas: {peopleQuantity}</label>
 
           <input
-            className="w-full"
+            className="w-full accent-[#318F51]"
             type="range"
             name="peopleQuantity"
             min={1}
@@ -128,7 +128,7 @@ const Page = () => {
           <label htmlFor="price">Precio Mínimo: ${minPrice ?? 0}</label>
 
           <input
-            className="w-full"
+            className="w-full accent-[#318F51]"
             type="range"
             name="minPrice"
             min={0}

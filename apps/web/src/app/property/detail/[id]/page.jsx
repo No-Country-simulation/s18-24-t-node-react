@@ -22,12 +22,12 @@ const PropertyDetail = () => {
   const [privateFilters, setPrivateFilters] = useState({})
   const [selectedPeopleQuantity, setSelectedPeopleQuantity] = useState(1)
 
+  const [totalPrice, setTotalPrice] = useState(0)
+
   const { searchValues } = useInputSearch()
   const { getPropertyById } = useProperties()
 
   useEffect(() => {
-    if (searchValues) setPrivateFilters(searchValues)
-
     setIsLoading(true)
 
     getPropertyById(params?.id)
@@ -36,41 +36,28 @@ const PropertyDetail = () => {
       .finally(() => setIsLoading(false))
   }, []);
 
-  // const router = useRouter();
-  // const searchParams = new URLSearchParams(window?.location?.search);
 
-  // const [filters, setFilters] = useState({
-  //   guests: 1,
-  //   checkIn: "",
-  //   checkOut: "",
-  // });
+  useEffect(() => {
+    const totalDays = countDaysBetweenDates(privateFilters.startDate, privateFilters.endDate)
+    const total = (currentProperty?.price * totalDays).toFixed(2)
 
-  // const handleClickReserve = async () => {
-  //   let params = {};
+    setTotalPrice(total)
+  }, [currentProperty, privateFilters])
 
-  //   if (filters) {
-  //     Object.keys(filters).forEach((key) => {
-  //       if (typeof filters[key] === "string" && filters[key].trim() === "") {
-  //         searchParams.delete(key);
-  //         return;
-  //       }
+  function countDaysBetweenDates(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-  //       if (filters[key] !== null) params[key] = filters[key];
-  //     });
-  //   }
+    const differenceInMiliseconds = end - start;
 
-  //   if (params) addQueryAndReload(params);
-  // };
+    const days = Math.ceil(differenceInMiliseconds / (1000 * 60 * 60 * 24));
 
-  // const addQueryAndReload = (queryParams) => {
-  //   for (const param in queryParams) {
-  //     searchParams.set(param, queryParams[param]);
-  //   }
+    return days;
+  }
 
-  //   router.push(`?${searchParams.toString()}`);
-  // };
-
-  // const { guests, checkIn, checkOut } = filters;
+  useEffect(() => {
+    if (Object.keys(searchValues).length > 0) setPrivateFilters({ startDate: searchValues.startDate, endDate: searchValues.endDate })
+  }, [searchValues]) 
 
   return (
     <section className="p-8 space-y-8">
@@ -109,12 +96,13 @@ const PropertyDetail = () => {
                   name="peopleQuantity"
                   min={1}
                   max={20}
-                  className="w-full"
+                  className="w-full accent-[#318F51]"
                   onChange={data => setSelectedPeopleQuantity(data.target.value)}
                   value={selectedPeopleQuantity}
                 />
               </div>
 
+              <strong>Total: ${totalPrice}</strong>
               <button
                 // onClick={handleClickReserve}
                 className="bg-[#318F51] py-1 rounded-lg w-full px-8 font-semibold text-slate-100 shadow-sm border border-slate-200 hover:cursor-pointer hover:bg-[#5FA77C82]/70 m-auto"

@@ -62,11 +62,13 @@ const tags = [
     label: "Espacio de trabajo",
   },
 ];
+
 const fileSchema = z
   .instanceof(File)
   .refine((file) => ["image/jpeg", "image/png"].includes(file.type), {
     message: "El archivo debe ser un JPEG o PNG",
   });
+
 const formSchema = z.object({
   title: z.string().min(4, {
     message: "Selecciona una opcion",
@@ -91,6 +93,7 @@ export default function RegisterProperty() {
   const [resource, setResource] = useState();
   const [files, setFiles] = useState([]);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {

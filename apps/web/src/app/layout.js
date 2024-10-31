@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
           {children}
         </main>
 
-        <footer className='bg-[#5FA777] h-80 mt-40' />
+        <footer className='bg-[#5FA777] h-80 pt-40' />
       </body>
     </html>
   );

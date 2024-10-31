@@ -1,3 +1,5 @@
+'use client'
+
 import Image from "next/image";
 import { REM } from "next/font/google";
 
@@ -16,8 +18,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useBoundStore } from "@/store/bound.store";
 
 export const Header = () => {
+
+  const hasToken = window.localStorage.getItem('token')
+
   return (
     <header className="relative w-full h-[110px] top-0 overflow-hidden bg-[#5FA777] px-8 shadow-2xl">
       <div className="flex h-full justify-between items-center">
@@ -68,9 +74,15 @@ export const Header = () => {
           </svg>
         </Link>
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Image src={userImage} alt="Perfil" width={70} height={70} />
-          </DropdownMenuTrigger>
+
+          {
+            hasToken && (
+              <DropdownMenuTrigger>
+                <Image src={userImage} alt="Perfil" width={70} height={70} />
+              </DropdownMenuTrigger>
+            )
+          }
+
           <DropdownMenuContent className="bg-[#5FA777] w-[50px]">
             <DropdownMenuItem className="text-white">
               <Link href={"/main-menu/profile"}>Mi perfil</Link>
@@ -79,7 +91,10 @@ export const Header = () => {
             <Link href={"/main-menu/register-property"}>Cargar una propiedad</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="text-white">
-            <Link href={"/auth/login"}>Cerrar sesion</Link>
+              <Link
+                onClick={() => window.localStorage.removeItem('token')}
+                href={"/auth/login"}
+              >Cerrar sesion</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
