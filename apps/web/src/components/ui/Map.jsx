@@ -6,10 +6,6 @@ const Map = ({ latitude, longitude }) => {
       <iframe
         width="100%"
         height="600"
-        frameBorder="0"
-        scrolling="no"
-        marginHeight="0"
-        marginWidth="0"
         src={mapUrl}
       >
         <a href="https://www.gps.ie/car-satnav-gps/">Car Navigation Systems</a>

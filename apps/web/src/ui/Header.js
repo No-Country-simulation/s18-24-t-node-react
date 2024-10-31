@@ -100,7 +100,7 @@ export const Header = () => {
         ) : (
           <div className="w-1/8 flex gap-7">
             <Link href={"/auth/login"} className="px-5 py-2 bg-white text-[#5FA777] rounded-xl">Login</Link>
-            <Link href={"/auth/register"} className="px-5 py-2 bg-white text-[#5FA777] rounded-xl">Register</Link>
+            <Link href={"/auth/register"} className="px-5 py-2 bg-white text-[#5FA777] rounded-xl">Registrarse</Link>
           </div>
         )}
       </div>

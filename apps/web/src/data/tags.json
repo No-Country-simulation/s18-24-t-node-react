@@ -1,0 +1,34 @@
+[
+  {
+    "id": "beachfront",
+    "label": "Playa en frente"
+  },
+  {
+    "id": "wifi",
+    "label": "Wifi"
+  },
+  {
+    "id": "pets allowed",
+    "label": "Se permiten mascotas"
+  },
+  {
+    "id": "pool",
+    "label": "Piscina"
+  },
+  {
+    "id": "with furniture",
+    "label": "Amueblada"
+  },
+  {
+    "id": "Smoking is allowed",
+    "label": "Se permite fumar"
+  },
+  {
+    "id": "private parking",
+    "label": "Estacionamiento Privado"
+  },
+  {
+    "id": "workspace",
+    "label": "Espacio de trabajo"
+  }
+]
