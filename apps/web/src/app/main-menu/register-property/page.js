@@ -27,6 +27,7 @@ import { useState } from "react";
 import { AlertPopup } from "@/components/Alert";
 import { newProperty } from "@/app/api/callApi";
 import { CldUploadWidget } from "next-cloudinary";
+import Autocomplete from "@/components/ui/Autocomplete";
 
 const tags = [
   {
@@ -143,6 +144,11 @@ export default function RegisterProperty() {
     }
     setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
   }
+
+  const handleSelect = (location) => {
+    console.log(`Latitud: ${location.lat}, Longitud: ${location.lon}`);
+  };
+
   return (
     <div className="mx-auto">
       <Title
@@ -298,10 +304,19 @@ export default function RegisterProperty() {
               </FormItem>
             )}
           />
-          {/* <FormField 
-            control={form.}
-          /> */}
           <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dirección (autocompletado)</FormLabel>
+                <FormControl>
+                  <Autocomplete onSelect={handleSelect} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          {/* <FormField
             control={form.control.pais}
             name="pais"
             render={({ field }) => (
@@ -353,7 +368,7 @@ export default function RegisterProperty() {
                 </FormControl>
               </FormItem>
             )}
-          />
+          /> */}
           {/*<FormField
             control={form.control}
             name="photos"

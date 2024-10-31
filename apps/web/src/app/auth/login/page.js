@@ -50,18 +50,18 @@ const Login = () => {
   };
   return (
     <>
-      <div className="min-h-screen flex justify-center mt-52">
+      <div className="min-h-screen flex flex-col items-center gap-5 mt-52">
         {alert.show && <AlertPopup message={alert.message} type={alert.type} />}
         <form
           className="bg-white bg-opacity-65 p-8 rounded-3xl shadow-md w-full max-w-md h-fit"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-3xl font-bold mb-1 text-left text-black">
-            Ingresar nuevamente
-          </h2>
-          <h4 className="text-xl text-left text-gray-500">
-            Entrar a mi cuenta
-          </h4>
+          <div className="text-center">
+            <h2 className="text-3xl font-bold mb-1 text-black">
+              Ingresar nuevamente
+            </h2>
+            <h4 className="text-xl text-gray-500">Entrar a mi cuenta</h4>
+          </div>
           <div className="flex flex-col items-center justify-center">
             <div className="mb-4 w-80 ">
               <label

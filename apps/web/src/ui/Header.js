@@ -90,7 +90,7 @@ export const Header = () => {
               <DropdownMenuItem className="text-white flex justify-center">
                 <Link
                   onClick={() => window.localStorage.removeItem("token")}
-                  href={"/auth/login"}
+                  href={"/"}
                 >
                   Cerrar sesión
                 </Link>
