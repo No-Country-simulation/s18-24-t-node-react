@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { saveToken, getToken } from "@/app/api/token";
 import { AlertPopup } from "@/components/Alert";
+import { useAuth } from "@/hooks/useAuth";
 
 const Login = () => {
   const router = useRouter();
+
+  const { loginWithCredentials } = useAuth()
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,38 +20,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
 
-      if (!response.ok) {
-        const errorMessages = await response.json();
-
-        if (Array.isArray(errorMessages.messages)) {
-          throw new Error(errorMessages.message?.map((msg) => msg).join(","));
-        }
-
-        throw new Error(errorMessages.message);
-      }
-
-      const data = await response.json();
-
-      saveToken(data.token);
-      setAlert({ show: true, message: "Login successful", type: "success" });
-      setTimeout(() => router.push("/"), 3000);
-    } catch (error) {
-      setAlert({ show: true, message: error.message, type: "error" });
-    }
-    setTimeout(() => setAlert({ show: false, message: "", type: "" }), 10000);
+    await loginWithCredentials({ email, password })
+      .then(() => router.push('/'))
+      .catch(error => setAlert({ show: true, message: error.message, type: "error" }))
   };
+
   return (
     <>
       <div className="min-h-screen flex flex-col items-center gap-5 mt-52">
