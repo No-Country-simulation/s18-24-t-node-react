@@ -2,26 +2,38 @@
 
 import Image from "next/image";
 import { REM } from "next/font/google";
-
-const rem = REM({
-  subsets: ["latin"],
-  weight: ["400"],
-});
-
 import userImage from "../app/public/Perfil.png";
 import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useBoundStore } from "@/store/bound.store";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
+import { USER_STATE } from "@/store/auth/auth.slice";
+
+const rem = REM({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 export const Header = () => {
-  const hasToken = window.localStorage.getItem("token");
+
+  const { user, checkAuthStatus, status, logout } = useAuth()
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+
+    checkAuthStatus(token)
+  }, [])
+
+
+  const closeSession = () => {
+    logout()
+    window.localStorage.removeItem('token')
+  }
 
   return (
     <header className="relative w-full h-[110px] top-0 overflow-hidden bg-[#5FA777] px-8 shadow-2xl">
@@ -72,7 +84,8 @@ export const Header = () => {
             />
           </svg>
         </Link>
-        {hasToken ? (
+
+        {status === USER_STATE.VERIFIED && (
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none">
               <Image src={userImage} alt="Perfil" width={70} height={70} />
@@ -87,9 +100,10 @@ export const Header = () => {
                   Cargar una propiedad
                 </Link>
               </DropdownMenuItem>
+
               <DropdownMenuItem className="text-white flex justify-center">
                 <Link
-                  onClick={() => window.localStorage.removeItem("token")}
+                  onClick={closeSession}
                   href={"/"}
                 >
                   Cerrar sesión
@@ -97,12 +111,18 @@ export const Header = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        ) : (
-          <div className="w-1/8 flex gap-7">
+
+        )}
+
+        {
+          status === USER_STATE.UNVERIFIED && (
+            <div className="w-1/8 flex gap-7">
             <Link href={"/auth/login"} className="px-5 py-2 bg-white text-[#5FA777] rounded-xl">Login</Link>
             <Link href={"/auth/register"} className="px-5 py-2 bg-white text-[#5FA777] rounded-xl">Register</Link>
           </div>
-        )}
+          )
+        }
+
       </div>
     </header>
   );
